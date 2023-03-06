@@ -1,0 +1,84 @@
+
+import os
+import glob
+import numpy as np
+import time
+import shutil
+from automate_quality_control_sat_mut_restructure import automate_quality_control_sat_mut_py as qc
+from automate_high_throughput_sat_mut_python import automate_high_throughput
+
+
+
+
+def automate_deact_analysis(parent_dir, variant_dir, seal, cap_upper, cap_lower, series, peak, output_plots, output_dir, sweep_length):
+    plate_dirs = glob.glob(os.path.join(parent_dir, '*_AN*'))
+    failed_plates = np.array([])
+    for i in range(0, len(plate_dirs)):
+        print(plate_dirs[i])
+        plate_name = os.path.basename(plate_dirs[i])
+        plate_date = plate_name.split('_')[0]
+
+        plate_qc_file = glob.glob(os.path.join(parent_dir, plate_name, '*ssDeact*', '*', '*parameters*'))
+
+        plate_variant_file = glob.glob(os.path.join(parent_dir, 'variant names', '*'+ plate_name + '.txt'))
+        #print('qc_file')
+        #print(plate_qc_file)
+        #print('var file')
+        #print(plate_variant_file)
+        if len(plate_qc_file) > 0:
+            if len(plate_variant_file) > 0:
+                #print('run')
+                plate_qc_path = os.path.dirname((plate_qc_file)[0])
+
+                '''
+                if plate_name == '12122019_AN' or plate_name == '21112019_AN' or plate_name == '21022020_AN2':
+                    # Error = point_two_value = neg_120mV_data[point_two_index[0]]
+                    # IndexError: list index out of range
+                    continue
+                '''
+
+                if plate_name == '13122018_AN2' or plate_name == '13122018_AN' or plate_name == '12052021_AN' or plate_name == '23072020_AN4':
+                    continue
+
+                plots_dir = os.path.join(parent_dir, 'Data Analysis Results ssDeact', plate_name, output_plots)
+
+                if os.path.isdir(plots_dir):
+                    print('rm')
+                    print(plots_dir)
+                    shutil.rmtree(plots_dir)
+                    #continue
+
+
+
+                qc_dir = os.path.join(parent_dir, 'Data Analysis Results ssDeact', plate_name, 'success_QC_mem_test_restructure')
+                if os.path.isdir(qc_dir):
+                    # print('done')
+                    # print(plate_name)
+                    # if plate_name != '22102020_AN':
+                    print('rm')
+                    print(qc_dir)
+                    shutil.rmtree(qc_dir)
+                    #continue
+
+                #qc(parent_dir, plate_qc_path, plate_name, os.path.basename(plate_qc_file[0]) , plate_variant_file[0], 18, 'ssDeact', seal, cap_upper, cap_lower, series, peak, 'success_QC_mem_test_restructure', 'qc_stats_mem_test.csv', 'pandas')
+
+
+                #else:
+                    #if not os.path.isdir(plots_dir):
+                        # Likely means that the QC analysis didn;t run all the way through due to memory management issues
+                        #qc(parent_dir, plate_qc_path, plate_name, os.path.basename(plate_qc_file[0]), plate_variant_file[0], 18, 'ssDeact', seal, cap_upper, cap_lower, series, peak, 'success_QC_mem_test', 'qc_stats_mem_test.csv', 'pandas')
+
+                #automate_high_throughput(parent_dir, plate_name, 'success_QC_mem_test_restructure', 0.85, plate_variant_file[0], -50, 18, 'ssDeact Fit', output_plots, output_dir, sweep_length)
+
+            else:
+                failed_plates = np.append(failed_plates, plate_name)
+        else:
+            failed_plates = np.append(failed_plates, plate_name)
+
+    print(failed_plates)
+def main():
+
+    automate_deact_analysis(os.path.join('Z://', 'Functional_Genomics_Syncropatch', 'KCNH2', 'exon2'), os.path.join('Z://', 'Functional_Genomics_Syncropatch', 'KCNH2', 'exon2', 'variant names'), 300E6, 50E-12, 5E-12, 20E6, 100E-12, 'plots mem test restructure', 'results mem test restructure', 3)
+
+if __name__ == '__main__':
+    main()
