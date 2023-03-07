@@ -6,7 +6,7 @@ import glob
 import time
 import statistics as sts
 import matplotlib.pyplot as plt
-import winsound
+#import winsound
 import pandas as pd
 
 
