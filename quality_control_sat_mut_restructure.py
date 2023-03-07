@@ -804,7 +804,7 @@ def main():
     #quality_control_sat_mut_py(os.path.join('Z://', 'Syncropatch'), os.path.join('01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32', 'parameters_01092022_AN_hERG_ssDeact_3s_AN_11.45.32.csv'), os.path.join('variant names', '01092022_AN.txt'), 18, 'ssDeact', 'pandas')
 
     #parent_dir, data_dir, plate_name, qc_file, variant_name_file, total_sweeps, analysis
-    quality_control_sat_mut_py(os.path.join('mnt','syncropatch','Clinical_variant_Brett'), os.path.join('01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32', 'hERG_ssDeact_3s_AN_11.45.32'), '01092022_AN', 'parameters_01092022_AN_hERG_ssDeact_3s_AN_11.45.32.csv', os.path.join('variant names', '01092022_AN.txt'), 18, 'ssDeact')
+    quality_control_sat_mut_py(os.path.join('/mnt','syncropatch','Clinical_variant_Brett'), os.path.join('01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32', 'hERG_ssDeact_3s_AN_11.45.32'), '01092022_AN', 'parameters_01092022_AN_hERG_ssDeact_3s_AN_11.45.32.csv', os.path.join('variant names', '01092022_AN.txt'), 18, 'ssDeact')
 
     #quality_control_sat_mut_py(os.path.join('Z://', 'Functional_Genomics_Syncropatch', 'KCNH2', 'Tris-HCl'), os.path.join('16122021_AN', 'hERG_ssDeact_3s_AN_14.07.31', 'hERG_ssDeact_3s_AN_14.07.31'), '16122021_AN', 'parameters_16122021_AN_hERG_ssDeact_3s_AN_14.07.31.csv', os.path.join('variant names', '16122021_AN.txt'), 18, 'ssDeact', 'pandas')
 
