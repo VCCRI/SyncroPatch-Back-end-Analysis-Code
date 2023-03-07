@@ -801,10 +801,12 @@ def main():
 
     # quality_control_sat_mut_py(os.path.join('Z://', 'Syncropatch'), os.path.join('10102019_AN2', 'hERG_Inact_Onset_AN_14.16.36', 'hERG_Inact_Onset_AN_14.16.36'), '10102019_AN2', 'parameters_10102019_AN2_hERG_Inact_Onset_AN_14.16.36.csv', os.path.join('variant names', '10102019_AN2.txt'), 12, 'Onset', 'pandas')
 
-    quality_control_sat_mut_py(os.path.join('Z://', 'Functional_Genomics_Syncropatch', 'KCNH2', 'Tris-HCl'),
-                               os.path.join('16122021_AN', 'hERG_ssDeact_3s_AN_14.07.31',
-                                            'hERG_ssDeact_3s_AN_14.07.31'), '16122021_AN',
-                               'parameters_16122021_AN_hERG_ssDeact_3s_AN_14.07.31.csv', os.path.join('variant names', '16122021_AN.txt'), 18, 'ssDeact', 'pandas')
+    #quality_control_sat_mut_py(os.path.join('Z://', 'Syncropatch'), os.path.join('01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32', 'parameters_01092022_AN_hERG_ssDeact_3s_AN_11.45.32.csv'), os.path.join('variant names', '01092022_AN.txt'), 18, 'ssDeact', 'pandas')
+
+    #parent_dir, data_dir, plate_name, qc_file, variant_name_file, total_sweeps, analysis
+    quality_control_sat_mut_py(os.path.join('Z://', 'Functional_Genomics_Syncropatch', 'KCNH2', 'Clinical_variant_Brett'), os.path.join('01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32', 'hERG_ssDeact_3s_AN_11.45.32'), '01092022_AN', 'parameters_01092022_AN_hERG_ssDeact_3s_AN_11.45.32.csv', os.path.join('variant names', '01092022_AN.txt'), 18, 'ssDeact')
+
+    #quality_control_sat_mut_py(os.path.join('Z://', 'Functional_Genomics_Syncropatch', 'KCNH2', 'Tris-HCl'), os.path.join('16122021_AN', 'hERG_ssDeact_3s_AN_14.07.31', 'hERG_ssDeact_3s_AN_14.07.31'), '16122021_AN', 'parameters_16122021_AN_hERG_ssDeact_3s_AN_14.07.31.csv', os.path.join('variant names', '16122021_AN.txt'), 18, 'ssDeact', 'pandas')
 
     # quality_control_sat_mut_py(os.path.join('Z://', 'Syncropatch'), os.path.join('03102019_AN', 'hERG_Inact_Onset_AN_13.00.30', 'hERG_Inact_Onset_AN_13.00.30'), '03102019_AN', 'parameters_03102019_AN_hERG_Inact_Onset_AN_13.00.30.csv', os.path.join('variant names', '03102019_AN.txt'), 12, 'Onset')
 
