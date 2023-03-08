@@ -610,7 +610,8 @@ def quality_control_sat_mut_py(parent_dir, data_dir, plate_name, qc_file, varian
     if analysis == 'Onset':
         # peak_current_parameter = input('Enter the magnitude required for the peak control current (Amperes):\n')
         peak_current_parameter = 100E-12
-
+    else:
+        peak_current_parameter = math.nan
     # 50pA/pF for onset
 
     if analysis == 'ssDeact':
