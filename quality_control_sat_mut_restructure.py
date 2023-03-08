@@ -8,6 +8,7 @@ import statistics as sts
 import matplotlib.pyplot as plt
 #import winsound
 import pandas as pd
+import math
 
 
 def prompt_user(filename_prompt, file_dir, data_dir, summary):
