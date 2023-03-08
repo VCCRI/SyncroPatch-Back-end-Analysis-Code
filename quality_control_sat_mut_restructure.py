@@ -543,7 +543,9 @@ def qc_well(well_names, well, parent_dir, data_dir, analysis, numpy_pandas, tota
     if passed_sweeps == 0:
         num_failed += 1
         return [failed_leak, failed_seal, failed_cap, num_failed, failed_access, failed_peak, total_fail_sweeps]
-    name_part = current_file[0].split('\\')
+    
+    #name_part = current_file[0].split('\\')
+    name_part = current_file[0].split('/')
     name_part = name_part[-1].split('.csv')
     name_part = name_part[0].replace('.', '_')
     name_part = name_part + str(passed_sweeps) + '.csv'
@@ -554,6 +556,7 @@ def qc_well(well_names, well, parent_dir, data_dir, analysis, numpy_pandas, tota
         var_indx = (wellCol + 1) / 2
     var_dir = SatMutVariantNames[int(var_indx - 1)]
     result_file_path = os.path.join(output_dir, var_dir, name_part)
+    print(output_dir)
     print(var_dir)
     print(name_part)
 
