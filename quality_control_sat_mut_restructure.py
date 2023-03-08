@@ -92,6 +92,8 @@ def qc_well(well_names, well, parent_dir, data_dir, analysis, numpy_pandas, tota
         wellID = well_names[well]
         wellCol = str(well_names[well][1] + well_names[well][2])
         wellCol = int(wellCol)
+
+    print(wellID)
     # Get the corresponding raw data file and open
     raw_pattern = '*' + wellID + '*'
     raw_path = os.path.join(parent_dir, data_dir, raw_pattern)
