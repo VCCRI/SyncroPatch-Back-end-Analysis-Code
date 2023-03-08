@@ -554,6 +554,8 @@ def qc_well(well_names, well, parent_dir, data_dir, analysis, numpy_pandas, tota
         var_indx = (wellCol + 1) / 2
     var_dir = SatMutVariantNames[int(var_indx - 1)]
     result_file_path = os.path.join(output_dir, var_dir, name_part)
+    print(var_dir)
+    print(name_part)
 
     if numpy_pandas == 'numpy':
         outputWellData = outputWellData.transpose()
@@ -716,6 +718,7 @@ def quality_control_sat_mut_py(parent_dir, data_dir, plate_name, qc_file, varian
     print(num_wells)
     for well in range(0, num_wells):
         print(well)
+
         [failed_leak, failed_seal, failed_cap, num_failed, failed_access, failed_peak, total_fail_sweeps] = qc_well(well_names, well, parent_dir, data_dir, analysis, numpy_pandas, total_sweeps, QC_data, seal_parameter, capacitance_parameter_lower, capacitance_parameter_upper, access_parameter, access_switch, peak_current_parameter, SatMutVariantNames, output_dir, failed_leak, failed_seal, failed_cap, num_failed, failed_access, failed_peak, total_fail_sweeps)
 
     print('The total number of wells in which all sweeps failed were ' + str(num_failed))
