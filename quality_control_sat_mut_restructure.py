@@ -570,7 +570,7 @@ def qc_well(well_names, well, parent_dir, data_dir, analysis, numpy_pandas, tota
                 print(outputWellData.iloc[row])
                 #result_writer.writerow(outputWellData[row])
         '''
-        # print(result_file_path)
+        print(result_file_path)
         outputWellData.to_csv(result_file_path, index=False, header=False)
 
     return [failed_leak, failed_seal, failed_cap, num_failed, failed_access, failed_peak, total_fail_sweeps]
@@ -652,6 +652,7 @@ def quality_control_sat_mut_py(parent_dir, data_dir, plate_name, qc_file, varian
 
     filename = os.path.join(parent_dir, data_dir, qc_file)
 
+    print(output_dir)
     if os.path.isdir(output_dir):
         shutil.rmtree(output_dir)
     os.mkdir(output_dir)
