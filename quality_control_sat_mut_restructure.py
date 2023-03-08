@@ -709,7 +709,10 @@ def quality_control_sat_mut_py(parent_dir, data_dir, plate_name, qc_file, varian
     failed_peak = 0
     failed_leak = 0
     total_fail_sweeps = 0
+
+    print(num_wells)
     for well in range(0, num_wells):
+        print(well)
         [failed_leak, failed_seal, failed_cap, num_failed, failed_access, failed_peak, total_fail_sweeps] = qc_well(well_names, well, parent_dir, data_dir, analysis, numpy_pandas, total_sweeps, QC_data, seal_parameter, capacitance_parameter_lower, capacitance_parameter_upper, access_parameter, access_switch, peak_current_parameter, SatMutVariantNames, output_dir, failed_leak, failed_seal, failed_cap, num_failed, failed_access, failed_peak, total_fail_sweeps)
 
     print('The total number of wells in which all sweeps failed were ' + str(num_failed))
