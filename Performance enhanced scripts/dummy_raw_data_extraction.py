@@ -156,7 +156,7 @@ class WellWidgetPYQTGraph():
         self.num_sample_points = self.parent.json_data.sample_count
         if len(sweep_times) == 0:
             sweep_times = self.json_well_data.get_sweep_times()
-
+            self.sweep_times = sweep_times
             self.plot_indexes = [i for i in range(0, len(sweep_times)) if sweep_times[i] >= self.cursor_start and sweep_times[i] <= self.cursor_end]
             self.plot_sample_points = len(self.plot_indexes)
             #self.sweep_times = sweep_times[self.plot_indexes[0]:self.plot_indexes[-1] + 1]
