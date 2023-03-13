@@ -185,14 +185,14 @@ class WellWidgetPYQTGraph():
 
 def main():
     # for taskbar icon consistency
-    tracemalloc.start()
+    #tracemalloc.start()
     #input_folder = os.path.join('C:\\', 'Users', 'j.farr', 'Documents', 'hERG_ssDeact_3s_AN_11.45.32')
     input_folder = os.path.join('/mnt','syncropatch','Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
     c = ControlWidget()
     p = PlateWidget(input_folder)
     high_throughput(os.path.join('/mnt','syncropatch','Clinical_variant_Brett',), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssDeact Fit')
-    print(tracemalloc.get_traced_memory())
-    tracemalloc.stop()
+    #print(tracemalloc.get_traced_memory())
+    #tracemalloc.stop()
 
 
 
