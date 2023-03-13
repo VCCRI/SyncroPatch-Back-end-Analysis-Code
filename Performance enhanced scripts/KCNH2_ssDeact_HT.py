@@ -14,7 +14,6 @@ from ssDeact_analyse_CD_neg_40mV import ssDeact_analyse_CD_neg_40mV
 import csv
 import time
 import math
-import winsound
 
 
 def append_summary_results(variant_summary_table, variant_summary_wells, summary_table, no_well_summary_table, variant_peak_table, analysis):
