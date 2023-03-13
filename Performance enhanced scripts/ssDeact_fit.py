@@ -592,7 +592,10 @@ def ssDeact_fit(well_widget, control_widget):
         parameter_data[actual_sweep].append(warning)
 
 
-
+    print(voltage_array)
+    print(parameter_data)
+    print(wellID)
+    print(summary_sweep_voltage)
     # Post quality control analysis now being performed on slow/fast tau trends and idenitfying outliers
     [parameter_data, include_summary] = post_analysis_qc(voltage_array, parameter_data, wellID, 'weighted', summary_sweep_voltage)
 
