@@ -270,7 +270,7 @@ def ssDeact_fit(well_widget, control_widget):
     end_time = end_time_indx_list[0]
 
     time_secs = time_secs[start_time:end_time]
-    time_secs = time_secs-time_secs[0]
+    time_secs = np.subtract(np.array(time_secs), time_secs[0])
     orig_time_secs = time_secs
     orig_time_ms = orig_time_secs * 1 * (10 ** 3)
 
