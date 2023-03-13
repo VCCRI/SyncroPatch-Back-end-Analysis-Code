@@ -149,7 +149,8 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, slow_fast, summary_v
     # print(voltage_array)
 
     if np.shape(tau_array)[0] <= 4:
-        # print(wellID + ' return cos not enough data')
+        print(wellID + ' return 1 cos not enough data')
+
         return [parameter_data, include_summary]
 
     # Now ensure there is an increasing trend in taus
@@ -196,7 +197,7 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, slow_fast, summary_v
     # print(parameter_data)
     # time.sleep(10)
     if np.shape(tau_array)[0] <= 4:
-        # print(wellID + ' return cos not enough data')
+        print(wellID + ' return 2 cos not enough data')
         include_summary = 1
         return [parameter_data, include_summary]
 
@@ -218,8 +219,9 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, slow_fast, summary_v
     # Fit the data, obtain model. Go through each point and determine how far it deviates from the model. Get the model? or data? stdev and if the point more than 3 stdevs from model then is outlier
 
     [parameter_data, non_lin_model, qc_fig_name] = fit_taus(tau_array, voltage_array, sweep_array, parameter_data, slow_fast, wellID)
-    if non_lin_model == 'N/A':
-        return [parameter_data, include_summary]
+    #if non_lin_model == 'N/A':
+        #print('return')
+    return [parameter_data, include_summary]
 
 
 
