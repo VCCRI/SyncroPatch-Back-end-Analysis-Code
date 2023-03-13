@@ -171,9 +171,12 @@ def high_throughput(parent_dir, plate_name, well_widgets, control_widget, num_ro
 
             if analysis_type == 'ssDeact Fit':
                 neg50mVTW = ssDeact_fit(well_widgets[row, col], control_widget)
+
+                '''
                 if neg50mVTW != 'N/A' and variant != 'neg_ctrl':
                     variant_summary_table = np.append(variant_summary_table, neg50mVTW)
                     variant_summary_wells = np.append(variant_summary_wells, wellID)
+                '''
 
             '''
             elif analysis_type == 'ssDeact CD sweep time ratio':
