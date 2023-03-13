@@ -108,7 +108,7 @@ def fit_taus(tau_array, voltage_array, sweep_array, parameter_data, slow_fast, w
 
 def post_analysis_qc(voltage_array, parameter_data, wellID, slow_fast, summary_voltage):
     # Plot the current densities against their voltages and then extract outliers and flag these sweeps
-    print('hi')
+    #print('hi')
     voltage_array = voltage_array / 1000
     summary_voltage = summary_voltage / 1000
     tau_array = np.array([])
@@ -149,7 +149,7 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, slow_fast, summary_v
     # print(voltage_array)
 
     if np.shape(tau_array)[0] <= 4:
-        print(wellID + ' return 1 cos not enough data')
+        #print(wellID + ' return 1 cos not enough data')
 
         return [parameter_data, include_summary]
 
@@ -197,7 +197,7 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, slow_fast, summary_v
     # print(parameter_data)
     # time.sleep(10)
     if np.shape(tau_array)[0] <= 4:
-        print(wellID + ' return 2 cos not enough data')
+        #print(wellID + ' return 2 cos not enough data')
         include_summary = 1
         return [parameter_data, include_summary]
 
@@ -324,6 +324,8 @@ def ssDeact_fit(well_widget, control_widget):
 
 
     for sweep in range(0, num_sweeps):
+        if well_widget.sweep_pass_qc_array[sweep] == 0:
+            continue
         actual_sweep = sweep+1
 
         sweep_voltage = voltage_array[sweep]
@@ -595,10 +597,6 @@ def ssDeact_fit(well_widget, control_widget):
         parameter_data[actual_sweep].append(warning)
 
 
-    print(voltage_array)
-    print(parameter_data)
-    print(wellID)
-    print(summary_sweep_voltage)
     # Post quality control analysis now being performed on slow/fast tau trends and idenitfying outliers
     [parameter_data, include_summary] = post_analysis_qc(voltage_array, parameter_data, wellID, 'weighted', summary_sweep_voltage)
 
