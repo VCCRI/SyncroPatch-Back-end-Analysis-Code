@@ -108,6 +108,7 @@ def fit_taus(tau_array, voltage_array, sweep_array, parameter_data, slow_fast, w
 
 def post_analysis_qc(voltage_array, parameter_data, wellID, slow_fast, summary_voltage):
     # Plot the current densities against their voltages and then extract outliers and flag these sweeps
+    print('hi')
     voltage_array = voltage_array / 1000
     summary_voltage = summary_voltage / 1000
     tau_array = np.array([])
