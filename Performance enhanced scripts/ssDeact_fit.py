@@ -277,7 +277,7 @@ def ssDeact_fit(well_widget, control_widget):
     # Extract the names of the actual sweeps
 
     voltage_array = np.arange(20, -160, -10)
-    sweepNumArray = np.array(1, 19, 1)
+    sweepNumArray = np.arange(1, 19, 1)
 
     try:
         summary_sweep_index = list(voltage_array).index(summary_sweep_voltage)
