@@ -515,4 +515,5 @@ def onset_inact_fit(well_widget, control_widget):
         summary_current = 'N/A'
 
 
+    print([summary_tau, summary_current])
     return [summary_tau, summary_current]
