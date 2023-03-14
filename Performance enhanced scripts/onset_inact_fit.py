@@ -183,9 +183,6 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, summary_voltage):
 def adjust_fit(time_secs, sweepData, p0, pr):
     orig_sweepData = sweepData
     try:
-        print('in')
-        print(0.75*time_secs[-1])
-        print(time_secs[-1])
         end_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= 0.75 * (time_secs[-1])]
         new_time_secs = time_secs[0:end_time_indx_list[0]]
 
@@ -199,7 +196,6 @@ def adjust_fit(time_secs, sweepData, p0, pr):
 
 
     except:
-        print('except')
 
         return [time_secs, orig_sweepData, 'N/A', -1, 'N/A', 'N/A']
 
@@ -256,6 +252,7 @@ def onset_inact_fit(well_widget, control_widget):
             summary_sweep = sweepNumArray[summary_sweep_index]
     except:
         summary_sweep = 'N/A'
+    print(summary_sweep)
 
     parameter_data = []
     parameter_data.append([])
@@ -291,7 +288,6 @@ def onset_inact_fit(well_widget, control_widget):
 
         sweepData = data[sweep, :]
         sweepData = sweepData * 1e12
-
 
 
         if actual_sweep < 6:
@@ -513,11 +509,10 @@ def onset_inact_fit(well_widget, control_widget):
 
         final_voltage_array = np.append(final_voltage_array, voltage_array[int(sweep / 2)])
 
+    print(parameter_data)
     [parameter_data, include_summary] = post_analysis_qc(final_voltage_array, parameter_data, wellID, summary_sweep_voltage)
-    if include_summary == 0:  # All data now bein returned for now to increase n number and up to user to filter summary results
+    if include_summary == 0:  # All data now being returned for now to increase n number and up to user to filter summary results
         summary_tau = 'N/A'
         summary_current = 'N/A'
 
-
-    print([summary_tau, summary_current])
     return [summary_tau, summary_current]
