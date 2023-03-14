@@ -228,7 +228,6 @@ def onset_inact_fit(well_widget, control_widget):
     neg_volt_cursor_start = control_widget.neg_volt_cursor_start
     neg_volt_cursor_end = control_widget.neg_volt_cursor_end
 
-    sweep_length = cursor_end - cursor_start
 
     time_indx_list = [i for i in range(len(time_secs)) if cursor_end >= time_secs[i] >= cursor_start]
     neg_time_indx_list = [i for i in range(len(time_secs)) if neg_volt_cursor_end >= time_secs[i] >= neg_volt_cursor_start]
@@ -244,7 +243,7 @@ def onset_inact_fit(well_widget, control_widget):
 
     # Extract the names of the actual sweeps
 
-    voltage_array = np.arange(20, -160, -10)
+    voltage_array = np.arange(60, -60, -10)
     sweepNumArray = np.arange(1, num_sweeps + 1, 1)
 
     try:
