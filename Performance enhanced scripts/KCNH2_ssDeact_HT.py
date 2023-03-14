@@ -14,6 +14,9 @@ from ssDeact_analyse_CD_neg_40mV import ssDeact_analyse_CD_neg_40mV
 import csv
 import time
 import math
+import multiprocessing
+import itertools
+
 
 
 def append_summary_results(variant_summary_table, variant_summary_wells, summary_table, no_well_summary_table, variant_peak_table, analysis):
@@ -54,6 +57,9 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
 
     return summary_table
 
+def work(time_secs, data, num_sweeps, total_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+
+    neg50mVTW = ssDeact_fit(time_secs, data, num_sweeps, total_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
 
 def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget, num_rows, num_cols, analysis_type):
     total_tic = time.time()
@@ -164,6 +170,13 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     '''
 
+    data = np.array([])
+    time_secs = np.array([])
+    num_sweeps = np.array([])
+    total_sweeps = np.array([])
+    wellID = np.array([])
+
+
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             wellID = well_widgets[row, col].wellID
@@ -171,14 +184,26 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
             if analysis_type == 'ssDeact Fit':
                 neg50mVTW = ssDeact_fit(well_widgets[row, col], control_widget)
+                data = np.append(data, well_widgets[row, col].data)
+                time_secs = np.append(time_secs, well_widgets[row, col].time_secs)
+                num_sweeps = np.append(num_sweeps, well_widgets[row, col].num_sweeps)
+                total_sweeps = np.append(total_sweeps, well_widgets[row, col].total_sweeps)
+                wellID = np.append(wellID, well_widgets[row, col].wellID)
 
-                '''
+
+
+
+    num_cpus = int(multiprocessing.cpu_count())
+    pool = multiprocessing.Pool(4)
+    pool.starmap(work, zip(time_secs, data, num_sweeps, total_sweeps, wellID, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
+
+    '''
                 if neg50mVTW != 'N/A' and variant != 'neg_ctrl':
                     variant_summary_table = np.append(variant_summary_table, neg50mVTW)
                     variant_summary_wells = np.append(variant_summary_wells, wellID)
-                '''
+    '''
 
-            '''
+    '''
             elif analysis_type == 'ssDeact CD sweep time ratio':
                 # current_density_ratio = ssDeact_analyse_CD(os.path.join(cwd_path, parent_dir, success_qc_dir, variant, variant_files[data_file]), wellID, os.path.join(output_plots, variant), int(num_sweeps), variant, 3, total_sweeps)
                 [current_density_ratio_250, current_density_ratio_500] = ssDeact_analyse_CD_time1_time2_peak_ratio(wellID, int(num_sweeps), variant, 3, total_sweeps, var_amp_thresh)
@@ -214,7 +239,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
                     variant_summary_wells = np.append(variant_summary_wells, wellID)
 
             '''
-        '''
+    '''
         if analysis_type == 'ssDeact Fit':
             if variant != 'neg_ctrl':
                 summary_table = append_summary_results(variant_summary_table, variant_summary_wells, summary_table, [], analysis_type)
@@ -235,7 +260,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
             summary_table = append_summary_results(variant_summary_table, variant_summary_wells, summary_table, [], analysis_type)
         '''
 
-        '''
+    '''
         var_tok = time.time()
         variant_elapsed_time_secs = var_tok - var_tic
         variant_elapsed_time_mins = variant_elapsed_time_secs / 60
