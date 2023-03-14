@@ -296,14 +296,14 @@ def onset_inact_fit(well_widget, control_widget):
 
             time_secs = neg_orig_time_secs
             plot_orig_time_secs = time_secs
-            plot_orig_time_secs = plot_orig_time_secs - 1.17  # new protocol
+            #plot_orig_time_secs = np.subtract(np.array(plot_orig_time_secs), 1.17)  # new protocol
             plot_orig_sweepData = sweepData
         else:
             sweepData = sweepData[time_indx_list]
 
             time_secs = orig_time_secs
             plot_orig_time_secs = time_secs
-            plot_orig_time_secs = plot_orig_time_secs - 1.17  # new protocol
+            #plot_orig_time_secs = np.subtract(np.array(plot_orig_time_secs), 1.17)  # new protocol
 
             plot_orig_sweepData = sweepData
 
