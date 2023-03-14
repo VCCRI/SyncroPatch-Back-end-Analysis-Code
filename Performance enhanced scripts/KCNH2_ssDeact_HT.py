@@ -57,9 +57,9 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
 
     return summary_table
 
-def work(time_secs, data, num_sweeps, total_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+def work(time_secs, data, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
 
-    neg50mVTW = ssDeact_fit(time_secs, data, num_sweeps, total_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
+    neg50mVTW = ssDeact_fit(time_secs, data, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
 
 def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget, num_rows, num_cols, analysis_type):
     total_tic = time.time()
@@ -184,10 +184,9 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
             if analysis_type == 'ssDeact Fit':
                 neg50mVTW = ssDeact_fit(well_widgets[row, col], control_widget)
-                data = np.append(data, well_widgets[row, col].data)
-                time_secs = np.append(time_secs, well_widgets[row, col].time_secs)
+                data = np.append(data, well_widgets[row, col].sweep_currents)
+                time_secs = np.append(time_secs, well_widgets[row, col].sweep_times)
                 num_sweeps = np.append(num_sweeps, well_widgets[row, col].num_sweeps)
-                total_sweeps = np.append(total_sweeps, well_widgets[row, col].total_sweeps)
                 wellID = np.append(wellID, well_widgets[row, col].wellID)
 
 
@@ -195,7 +194,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     num_cpus = int(multiprocessing.cpu_count())
     pool = multiprocessing.Pool(num_cpus)
-    pool.starmap(work, zip(time_secs, data, num_sweeps, total_sweeps, wellID, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
+    pool.starmap(work, zip(time_secs, data, num_sweeps, wellID, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
 
     '''
                 if neg50mVTW != 'N/A' and variant != 'neg_ctrl':

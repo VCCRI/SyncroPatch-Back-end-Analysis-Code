@@ -250,10 +250,12 @@ def peak_current_smaller_threshold(times, currents, peak_current_parameter, star
     return (max_current < peak_current_parameter)
 
 
-def ssDeact_fit(well_widget, control_widget):
+#def ssDeact_fit(well_widget, control_widget):
+def ssDeact_fit(time_secs, data, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
     # Initialise return value
     neg50mVTW = 'N/A'
 
+    '''
     data = well_widget.sweep_currents
     time_secs = well_widget.sweep_times
     num_sweeps = well_widget.num_sweeps
@@ -265,6 +267,7 @@ def ssDeact_fit(well_widget, control_widget):
     amp_thresh = control_widget.amp_thresh
     cursor_start = control_widget.cursor_start
     cursor_end = control_widget.cursor_end
+    '''
     sweep_length = cursor_end-cursor_start
 
     start_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= cursor_start]
