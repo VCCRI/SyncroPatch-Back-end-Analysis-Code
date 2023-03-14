@@ -55,7 +55,7 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
     return summary_table
 
 
-def high_throughput(parent_dir, plate_name, well_widgets, control_widget, num_rows, num_cols, analysis_type):
+def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget, num_rows, num_cols, analysis_type):
     total_tic = time.time()
 
     if analysis_type == 'ssDeact Fit' or analysis_type == 'ssDeact CD sweep time ratio' or analysis_type == 'ssDeact CD sweep peak ratio' or analysis_type == 'ssDeact CD sweep peak':

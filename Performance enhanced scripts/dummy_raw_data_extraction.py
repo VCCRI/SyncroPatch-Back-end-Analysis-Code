@@ -15,7 +15,9 @@ import multiprocessing
 import itertools
 from extract_raw_data import Json_Data, Well
 import tracemalloc
-from KCNH2_ssDeact_HT import high_throughput
+from KCNH2_ssDeact_HT import high_throughput_ssDeact
+from KCNH2_ssAct_HT import high_throughput_ssAct
+from KCNH2_OnsetInact_HT import high_throughput_onset_inact
 
 logging.basicConfig(level=logging.INFO)
 
@@ -187,12 +189,21 @@ def main():
     # for taskbar icon consistency
     #tracemalloc.start()
     #input_folder = os.path.join('C:\\', 'Users', 'j.farr', 'Documents', 'hERG_ssDeact_3s_AN_11.45.32')
-    input_folder = os.path.join('/mnt','syncropatch','Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
+    #input_folder = os.path.join('/mnt','syncropatch','Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
+
+    #input_folder = os.path.join('/datadrive', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
+    input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssAct_1s_50us_AN_11.42.11')
+    #input_folder = os.path.join('/datadrive', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_Inact_Onset_AN_11.51.10')
+
+
+
     c = ControlWidget()
     p = PlateWidget(input_folder)
 
     tic = time.time()
-    high_throughput(os.path.join('/mnt','syncropatch','Clinical_variant_Brett',), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssDeact Fit')
+    #high_throughput_ssDeact(os.path.join('/datadrive','syncropatch','Clinical_variant_Brett',), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssDeact Fit')
+    high_throughput_ssAct(os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', ), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssAct')
+
     #print(tracemalloc.get_traced_memory())
     #tracemalloc.stop()
     print(time.time()-tic)
