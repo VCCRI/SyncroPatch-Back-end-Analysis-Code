@@ -423,7 +423,7 @@ def ssAct_fit(well_widget, control_widget):
 
         sweep_voltage = voltage_array[sweep]
 
-        capacitance = well_widget.capacitance_array[sweep]
+        capacitance = well_widget.sweep_cap_array[sweep]
         sweepData = data[sweep, :]
 
         sweepData = sweepData[start_time:end_time]
