@@ -315,8 +315,8 @@ def onset_inact_fit(well_widget, control_widget):
         currents_of_interest_indx = [i for i in range(0, len(sweep_list)) if 0 <= sweep_list[i] <= 500]
 
         if len(currents_of_interest_indx) > 20:
-            sweepData = sweepData[currents_of_interest_indx]
-            time_secs = time_secs[currents_of_interest_indx]
+            sweepData = sweepData[currents_of_interest_indx[0]:currents_of_interest_indx[-1]]
+            time_secs = time_secs[currents_of_interest_indx[0]:currents_of_interest_indx[-1]]
         else:
             continue
 
