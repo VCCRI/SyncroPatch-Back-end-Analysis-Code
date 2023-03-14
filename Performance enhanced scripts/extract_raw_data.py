@@ -43,12 +43,16 @@ class Json_Data():
         self.tiled_disregarded_sweeps = np.tile(~self.valid_sweeps,
             (self.row_count * self.column_count, 1))
 
-        self.cursor_bounds = meta['ExperimentConditions']['OAFunctions']
-        self.cursor_region = self.cursor_bounds['CursorName' == 'tail']
-        self.cursor_start = float(self.cursor_region['TimeStart_ms'])
-        self.cursor_start = self.cursor_start - 0.1 * self.cursor_start
-        self.cursor_end = float(self.cursor_region['TimeEnd_ms'])
-        self.cursor_end = self.cursor_end + 0.1 * self.cursor_end
+        try:
+            self.cursor_bounds = meta['ExperimentConditions']['OAFunctions']
+            self.cursor_region = self.cursor_bounds['CursorName' == 'tail']
+            self.cursor_start = float(self.cursor_region['TimeStart_ms'])
+            self.cursor_start = self.cursor_start - 0.1 * self.cursor_start
+            self.cursor_end = float(self.cursor_region['TimeEnd_ms'])
+            self.cursor_end = self.cursor_end + 0.1 * self.cursor_end
+        except:
+            self.cursor_start = None
+            self.cursor_end = None
 
         self.sample_count = meta['TraceHeader']['MeasurementLayout'][
             'NofSamples']
