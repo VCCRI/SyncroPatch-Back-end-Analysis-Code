@@ -183,6 +183,7 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, summary_voltage):
 def adjust_fit(time_secs, sweepData, p0, pr):
     orig_sweepData = sweepData
     try:
+        print('in')
         print(0.75*time_secs[-1])
         print(time_secs[-1])
         end_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= 0.75 * (time_secs[-1])]
@@ -198,6 +199,7 @@ def adjust_fit(time_secs, sweepData, p0, pr):
 
 
     except:
+        print('except')
 
         return [time_secs, orig_sweepData, 'N/A', -1, 'N/A', 'N/A']
 
