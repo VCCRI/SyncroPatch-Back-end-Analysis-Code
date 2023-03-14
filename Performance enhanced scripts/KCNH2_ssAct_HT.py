@@ -5,7 +5,6 @@ from ssAct_fit import ssAct_fit
 import csv
 import time
 import math
-import winsound
 
 
 def append_summary_results(variant_summary_table, variant_summary_wells, summary_table, no_well_summary_table,
