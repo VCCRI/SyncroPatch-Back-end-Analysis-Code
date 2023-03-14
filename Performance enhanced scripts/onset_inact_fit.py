@@ -321,7 +321,7 @@ def onset_inact_fit(well_widget, control_widget):
             continue
 
         # 1.17 the time when voltage pulse starts so this is the time = 0 point
-        time_secs = time_secs - 1.17  # new protocol
+        time_secs = np.sutract(np.array(time_secs), 1.17)  # new protocol
 
 
         # Informed fitting
