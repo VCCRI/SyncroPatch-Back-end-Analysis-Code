@@ -170,11 +170,10 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     '''
 
-    data = np.array([])
-    time_secs = np.array([])
-    num_sweeps = np.array([])
-    total_sweeps = np.array([])
-    wellID = np.array([])
+    data = []
+    time_secs = []
+    num_sweeps = []
+    wellID = []
 
 
     for row in range(0, num_rows):
@@ -184,10 +183,10 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
             if analysis_type == 'ssDeact Fit':
                 #neg50mVTW = ssDeact_fit(well_widgets[row, col], control_widget)
-                data = np.append(data, well_widgets[row, col].sweep_currents)
-                time_secs = np.append(time_secs, well_widgets[row, col].sweep_times)
-                num_sweeps = np.append(num_sweeps, well_widgets[row, col].num_sweeps)
-                wellID = np.append(wellID, well_widgets[row, col].wellID)
+                data.append([well_widgets[row, col].sweep_currents])
+                time_secs.append([well_widgets[row, col].sweep_times])
+                num_sweeps.append(well_widgets[row, col].num_sweeps)
+                wellID.append(well_widgets[row, col].wellID)
 
 
 
