@@ -418,7 +418,7 @@ def ssAct_fit(well_widget, control_widget):
 
     norm_currs = np.array([])  # array that stores the current densities which is then normalised using the minimum current dens
     voltage_array =  np.array([])
-    
+
     for sweep in range(0, num_sweeps):
         if well_widget.sweep_pass_qc_array[sweep] == 0:
             continue
@@ -433,7 +433,7 @@ def ssAct_fit(well_widget, control_widget):
 
         # Current density = minimum current amplitude / capacitance
         current_density = min_curr_amp / capacitance
-        current_dens_data[actual_sweep].append(voltage_array[int(sweep)])
+        current_dens_data[actual_sweep].append(template_voltage_array[int(sweep)])
         current_dens_data[actual_sweep].append(current_density)
 
         if actual_sweep == summary_sweep:
