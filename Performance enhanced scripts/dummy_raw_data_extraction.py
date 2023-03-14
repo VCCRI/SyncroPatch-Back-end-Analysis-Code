@@ -44,16 +44,16 @@ class ControlWidget():
         self.amp_thresh = 100
 
         #ssDeact
-        #self.cursor_start = 1.2
-        #self.cursor_end = 4.2
+        self.cursor_start = 1.2
+        self.cursor_end = 4.2
 
         #ssAct
         #self.cursor_start = 1.205
         #self.cursor_end = 1.3
 
         #Onset
-        self.cursor_start = 1.175
-        self.cursor_end = 1.2
+        #self.cursor_start = 1.175
+        #self.cursor_end = 1.2
         self.neg_volt_cursor_start = 1.175
         self.neg_volt_cursor_end = 1.22
 
