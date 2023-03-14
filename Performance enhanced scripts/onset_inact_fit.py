@@ -252,7 +252,7 @@ def onset_inact_fit(well_widget, control_widget):
             summary_sweep = sweepNumArray[summary_sweep_index]
     except:
         summary_sweep = 'N/A'
-    print(summary_sweep)
+    #print(summary_sweep)
 
     parameter_data = []
     parameter_data.append([])
@@ -509,7 +509,7 @@ def onset_inact_fit(well_widget, control_widget):
 
         final_voltage_array = np.append(final_voltage_array, voltage_array[int(sweep / 2)])
 
-    print(parameter_data)
+    #print(parameter_data)
     [parameter_data, include_summary] = post_analysis_qc(final_voltage_array, parameter_data, wellID, summary_sweep_voltage)
     if include_summary == 0:  # All data now being returned for now to increase n number and up to user to filter summary results
         summary_tau = 'N/A'

@@ -229,13 +229,13 @@ def high_throughput_onset_inact(parent_dir, plate_name, well_widgets, control_wi
             wellID = spl_name[-2]
     '''
 
-    count = 1
+    #count = 1
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             wellID = well_widgets[row, col].wellID
             variant = well_widgets[row, col].variant
-            print(count)
-            count = count+1
+            #print(count)
+            #count = count+1
             if analysis_type == 'Onset':
                 [zeromVtau, peak_current] = onset_inact_fit(well_widgets[row, col], control_widget)
                 '''
