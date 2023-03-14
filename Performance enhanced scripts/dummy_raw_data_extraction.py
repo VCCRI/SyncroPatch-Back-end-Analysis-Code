@@ -128,10 +128,10 @@ class WellWidgetPYQTGraph():
 
         self.parent = parent
 
-        self.cap_lower_QC_input = 5
-        self.cap_upper_QC_input = 15
-        self.seal_QC_input = 300
-        self.SR_QC_input = 20
+        self.cap_lower_QC_input = 5*1e-12
+        self.cap_upper_QC_input = 15 * 1e-12
+        self.seal_QC_input = 300*1e6
+        self.SR_QC_input = 20*1e6
 
         self.visualising_sweep = 1
 
