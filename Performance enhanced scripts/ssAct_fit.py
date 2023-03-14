@@ -392,7 +392,7 @@ def ssAct_fit(well_widget, control_widget):
     orig_time_ms = orig_time_secs * 1 * (10 ** 3)
 
     # Extract the names of the actual sweeps
-    voltage_array = np.arange(20, -160, -10)
+    voltage_array = np.arange(-50, 80, 10)
     sweepNumArray = np.arange(1, num_sweeps+1, 1)
 
     try:
@@ -427,7 +427,6 @@ def ssAct_fit(well_widget, control_widget):
         sweepData = data[sweep, :]
 
         sweepData = sweepData[start_time:end_time]
-
 
         min_curr_amp = min(sweepData)
 
@@ -493,7 +492,6 @@ def ssAct_fit(well_widget, control_widget):
 
 
         therm_fit_parameters = np.vstack((therm_fit_parameters, therm_param_results))
-
 
 
     if returnV05 == 'V05' or returnK == 'V05':
