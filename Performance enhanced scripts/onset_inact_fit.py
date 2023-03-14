@@ -182,13 +182,15 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, summary_voltage):
 
 def adjust_fit(time_secs, sweepData, p0, pr):
 
-    end_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= 0.75 * (time_secs[-1])]
-    new_time_secs = time_secs[0:end_time_indx_list[0]]
-    orig_sweepData = sweepData
-    sweepData = sweepData[0:end_time_indx_list[0]]
+
 
 
     try:
+        end_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= 0.75 * (time_secs[-1])]
+        new_time_secs = time_secs[0:end_time_indx_list[0]]
+        orig_sweepData = sweepData
+        sweepData = sweepData[0:end_time_indx_list[0]]
+
         warnings.filterwarnings('ignore')
         params, cov = optimize.curve_fit(exponential_curve, new_time_secs * 1e3, sweepData, p0, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
 
