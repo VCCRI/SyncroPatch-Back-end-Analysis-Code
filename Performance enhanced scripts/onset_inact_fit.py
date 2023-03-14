@@ -183,6 +183,8 @@ def post_analysis_qc(voltage_array, parameter_data, wellID, summary_voltage):
 def adjust_fit(time_secs, sweepData, p0, pr):
     orig_sweepData = sweepData
     try:
+        print(0.75*time_secs[-1])
+        print(time_secs[-1])
         end_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= 0.75 * (time_secs[-1])]
         new_time_secs = time_secs[0:end_time_indx_list[0]]
 
@@ -232,11 +234,11 @@ def onset_inact_fit(well_widget, control_widget):
     neg_time_indx_list = [i for i in range(len(time_secs)) if neg_volt_cursor_end >= time_secs[i] >= neg_volt_cursor_start]
 
     orig_time_secs = time_secs
-    time_secs = time_secs[time_indx_list[0]: time_indx_list[-1]]
+    time_secs = time_secs[time_indx_list[0]: time_indx_list[-1]+1]
     time_secs = np.subtract(np.array(time_secs), time_secs[0])
     orig_time_ms = orig_time_secs * 1 * (10 ** 3)
 
-    neg_time_secs = orig_time_secs[neg_time_indx_list[0]:neg_time_indx_list[-1]]
+    neg_time_secs = orig_time_secs[neg_time_indx_list[0]:neg_time_indx_list[-1]+1]
     neg_orig_time_secs = neg_time_secs
     orig_time_secs = time_secs
 
@@ -314,8 +316,8 @@ def onset_inact_fit(well_widget, control_widget):
         currents_of_interest_indx = [i for i in range(0, len(sweep_list)) if 0 <= sweep_list[i] <= 500]
 
         if len(currents_of_interest_indx) > 20:
-            sweepData = sweepData[currents_of_interest_indx[0]:currents_of_interest_indx[-1]]
-            time_secs = time_secs[currents_of_interest_indx[0]:currents_of_interest_indx[-1]]
+            sweepData = sweepData[currents_of_interest_indx[0]:currents_of_interest_indx[-1]+1]
+            time_secs = time_secs[currents_of_interest_indx[0]:currents_of_interest_indx[-1]+1]
         else:
             continue
 
