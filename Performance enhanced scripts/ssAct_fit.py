@@ -392,11 +392,13 @@ def ssAct_fit(well_widget, control_widget):
     orig_time_ms = orig_time_secs * 1 * (10 ** 3)
 
     # Extract the names of the actual sweeps
-    voltage_array = np.arange(-50, 80, 10)
+    template_voltage_array = np.arange(-50, 80, 10)
+
+
     sweepNumArray = np.arange(1, num_sweeps+1, 1)
 
     try:
-        summary_sweep_index = list(voltage_array).index(summary_sweep_voltage)
+        summary_sweep_index = list(template_voltage_array).index(summary_sweep_voltage)
         summary_sweep = 'N/A'
         if summary_sweep_index:
             summary_sweep = sweepNumArray[summary_sweep_index]
@@ -415,13 +417,12 @@ def ssAct_fit(well_widget, control_widget):
         current_dens_data.append([])
 
     norm_currs = np.array([])  # array that stores the current densities which is then normalised using the minimum current dens
-
+    voltage_array =  np.array([])
+    
     for sweep in range(0, num_sweeps):
         if well_widget.sweep_pass_qc_array[sweep] == 0:
             continue
         actual_sweep = sweep + 1
-
-        sweep_voltage = voltage_array[sweep]
 
         capacitance = well_widget.sweep_cap_array[sweep]
         sweepData = data[sweep, :]
@@ -432,12 +433,13 @@ def ssAct_fit(well_widget, control_widget):
 
         # Current density = minimum current amplitude / capacitance
         current_density = min_curr_amp / capacitance
-        current_dens_data[actual_sweep].append(voltage_array[int(sweep / 2)])
+        current_dens_data[actual_sweep].append(voltage_array[int(sweep)])
         current_dens_data[actual_sweep].append(current_density)
 
         if actual_sweep == summary_sweep:
             pos40mVCD = current_density
 
+        voltage_array = np.append(voltage_array, template_voltage_array[sweep])
         norm_currs = np.append(norm_currs, min_curr_amp)
 
     # Now fit the minimum current data to the boltzmann curves
