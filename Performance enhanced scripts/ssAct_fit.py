@@ -521,5 +521,5 @@ def ssAct_fit(well_widget, control_widget):
     fit_params_results = np.append(fit_params_results, warning)
     fit_parameters = np.vstack((fit_parameters, fit_params_results))
 
-
+    print([pos40mVCD, returnV05, returnDG, returnK, returnz])
     return [pos40mVCD, returnV05, returnDG, returnK, returnz]
