@@ -57,7 +57,7 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
 
     return summary_table
 
-def work(time_secs, data, num_sweeps, sweep_pass_qc_array, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+def work(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
 
     neg50mVTW = ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
 
