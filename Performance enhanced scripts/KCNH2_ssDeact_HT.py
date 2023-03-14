@@ -183,8 +183,8 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
             if analysis_type == 'ssDeact Fit':
                 #neg50mVTW = ssDeact_fit(well_widgets[row, col], control_widget)
-                data.append([well_widgets[row, col].sweep_currents])
-                time_secs.append([well_widgets[row, col].sweep_times])
+                data.append(well_widgets[row, col].sweep_currents)
+                time_secs.append(well_widgets[row, col].sweep_times)
                 num_sweeps.append(well_widgets[row, col].num_sweeps)
                 wellIDs.append(well_widgets[row, col].wellID)
 
