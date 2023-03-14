@@ -137,11 +137,13 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
             CD_array_table = np.array([])
             
     '''
+    count = 1
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             wellID = well_widgets[row, col].wellID
             variant = well_widgets[row, col].variant
-
+            print(count)
+            count = count + 1
             if analysis_type == 'ssAct':
                 [pos40mVCD, returnV05, returnDG, returnK, returnz] = ssAct_fit(well_widgets[row, col], control_widget)
 
