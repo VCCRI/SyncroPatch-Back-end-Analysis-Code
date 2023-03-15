@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 import csv
 import matplotlib.pyplot as plt
@@ -11,6 +13,8 @@ import pickle
 from scipy.stats.distributions import t
 import math
 import pandas as pd
+import itertools
+import multiprocessing
 
 from ssDeact_warnings import generate_warnings
 from ssDeact_warnings_neg_summary import generate_neg_summary_warnings
@@ -250,15 +254,279 @@ def peak_current_smaller_threshold(times, currents, peak_current_parameter, star
     return (max_current < peak_current_parameter)
 
 
-#def ssDeact_fit(well_widget, control_widget):
-def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+
+
+def work(sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length, sweepData, orig_time_secs, start_time, end_time, summary_sweep_voltage, amp_thresh, rsq_thresh):
+
+
+    orig_time_ms = orig_time_secs* 1e-3
+    #if sweep_pass_qc_array[sweep] == 0:
+    if sweep_pass_qc == 0:
+        #continue
+        return
+    #actual_sweep = sweep + 1
+
+    #sweep_voltage = voltage_array[sweep]
+
+    if sweep_voltage == -80 or sweep_voltage == -90:
+        # if actual_sweep == 11 or actual_sweep == 12:
+        #continue
+        return
+
+    global analyse_neg
+    # Variables that indicates whether to use previous fit parameters as start point inputs for this fit iteration
+    # Dynamic start point initialisation
+    # if actual_sweep >= 11:
+    if sweep_voltage <= -80:
+        # When equal to 0, set to 2 so program knows to seed with initial p0 parameters
+        if analyse_neg == 0:
+            analyse_neg = 2
+        else:
+            # When equal to 1 program knows to use previous iterations of params for seeds
+            analyse_neg = 1
+
+    #sweepData = data[sweep, :]
+
+    sweepData = sweepData[start_time:end_time]
+    orig_sweepData = sweepData
+
+    sweepData = sweepData * 1e12
+
+    if summary_sweep_voltage > -80:
+        if sweep_voltage == summary_sweep_voltage:
+            if max(sweepData) < amp_thresh:
+                #continue
+                return
+    else:
+        if sweep_voltage == summary_sweep_voltage:
+            if min(sweepData) > amp_thresh:
+                #continue
+                return
+
+    # Now check if there is a capacitive spike. If yes then trim time and current data again
+
+    # Use the minimum or maximum, depending on the curve shape, to trim the best
+
+    # if actual_sweep < 11:
+    if sweep_voltage > -80:
+        max_current = max(sweepData)
+        indx_max_current = 2 * (list(sweepData).index(max_current))
+        sweepData = sweepData[indx_max_current:]
+        time_secs = orig_time_secs[indx_max_current:]
+        time_ms = orig_time_ms[indx_max_current:]
+
+        # Early sweeps aren't as receptive to the max point trimming
+        # Compare standard deviations of start portion and all data to determine if noise is still present at the start
+
+        if np.shape(time_secs)[0] >= 200:
+            overall_std = s_tats.stdev(sweepData)
+            start_std = s_tats.stdev(sweepData[0:200])
+
+            if start_std > overall_std:
+                trim_extra_time = 200
+                sweepData = sweepData[trim_extra_time:]
+                time_secs = time_secs[trim_extra_time:]
+                time_ms = time_ms[trim_extra_time:]
+
+
+
+    else:
+        min_current = min(sweepData)
+        indx_min_current = 2 * (list(sweepData).index(min_current))
+
+        if sweep_voltage <= -140:
+            indx_last_time = [i for i in range(len(orig_time_secs)) if orig_time_secs[i] >= 1]
+            indx_last_time = indx_last_time[0]
+        else:
+            indx_last_time = [i for i in range(len(orig_time_secs)) if orig_time_secs[i] >= 1.5]
+            indx_last_time = indx_last_time[0]
+
+        sweepData = sweepData[indx_min_current:indx_last_time]
+        time_secs = orig_time_secs[indx_min_current:indx_last_time]
+        time_ms = orig_time_ms[indx_min_current:indx_last_time]
+
+    # Doing informed fitting now
+    global rsquare
+    global params
+    if sweep_voltage > -80:
+        # First Time data been fit, start initial seed
+        if rsquare == -1:
+            p0 = [500, 200, 200, 1000, 300]
+        else:
+            #if not warning:
+                #p0 = params
+            #else:
+            p0 = [500, 200, 200, 1000, 300]
+    else:
+        if analyse_neg == 2:
+            p0 = [-500, -1000, -20, 20, 300]
+        else:
+            #if not warning:
+                #p0 = params
+            #else:
+            p0 = [-500, -1000, -20, 20, 300]
+
+    try:
+        warnings.filterwarnings('ignore')
+        params, cov = optimize.curve_fit(double_exponential, time_ms, sweepData, p0, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+    except:
+        #continue
+        return
+
+    model = double_exponential(time_ms, params[0], params[1], params[2], params[3], params[4])
+    # print('model variable computed')
+    A = params[0]
+    B = params[1]
+    C = params[2]
+    tau1 = params[3]
+    tau2 = params[4]
+
+    rsquare = 1 - sum((sweepData - model) ** 2) / sum((sweepData - s_tats.mean(sweepData)) ** 2)
+
+    # Produce warnings or refit data if necessary
+    fix_rsq = 0
+    # if actual_sweep > 12:
+    if sweep_voltage < -90:
+        if rsquare < rsq_thresh:
+
+            end_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= 0.9 * (time_secs[-1])]
+
+            new_time_secs = time_secs[0:end_time_indx_list[0]]
+            sweepData = sweepData[0:end_time_indx_list[0]]
+            unnorm_sweepData = sweepData[0:end_time_indx_list[0]]
+            new_time_ms = new_time_secs * 1e3
+
+            # Refit the data
+            try:
+                params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+            except:
+                # print('fit failed')
+                #continue
+                return
+
+            # When not using normalisation approach
+            A = params[0]
+            B = params[1]
+            C = params[2]
+            tau1 = params[3]
+            tau2 = params[4]
+
+            model = double_exponential(new_time_ms, params[0], params[1], params[2], params[3], params[4])
+
+            rsquare = 1 - sum((sweepData - model) ** 2) / sum((sweepData - s_tats.mean(sweepData)) ** 2)
+            fix_rsq = 1
+    else:
+        if rsq_thresh > rsquare >= 0.5 * rsq_thresh:
+
+            ###########  NOTE  ########## This done for non-extrap method
+            end_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= 0.9 * (time_secs[-1])]
+
+            new_time_secs = time_secs[0:end_time_indx_list[0]]
+            sweepData = sweepData[0:end_time_indx_list[0]]
+            unnorm_sweepData = sweepData[0:end_time_indx_list[0]]
+            new_time_ms = new_time_secs * 1e3
+
+            # Refit the data
+            try:
+                params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+            except:
+                # print('fit failed')
+                #continue
+                return
+
+            model = double_exponential(new_time_ms, params[0], params[1], params[2], params[3], params[4])
+            A = params[0]
+            B = params[1]
+            C = params[2]
+            tau1 = params[3]
+            tau2 = params[4]
+            rsquare = 1 - sum((sweepData - model) ** 2) / sum((sweepData - s_tats.mean(sweepData)) ** 2)
+
+            fix_rsq = 1
+
+    sigma_params = np.sqrt(np.diagonal(cov))
+    A_sigma = sigma_params[0]
+    B_sigma = sigma_params[1]
+    C_sigma = sigma_params[2]
+    tau1_sigma = sigma_params[3]
+    tau2_sigma = sigma_params[4]
+
+    alpha = 0.05
+    if fix_rsq == 0:
+        tval = t.ppf(1 - alpha / 2.0, (len(time_secs) - len(params)))
+    else:
+        tval = t.ppf(1 - alpha / 2.0, (len(new_time_secs) - len(params)))
+
+    A_lower_ci = A - (tval * (A_sigma))
+    A_upper_ci = A + (tval * (A_sigma))
+    B_lower_ci = B - (tval * (B_sigma))
+    B_upper_ci = B + (tval * (B_sigma))
+    C_lower_ci = C - (tval * (C_sigma))
+    C_upper_ci = C + (tval * (C_sigma))
+    tau1_lower_ci = tau1 - (tval * (tau1_sigma))
+    tau1_upper_ci = tau1 + (tval * (tau1_sigma))
+    tau2_lower_ci = tau2 - (tval * (tau2_sigma))
+    tau2_upper_ci = tau2 + (tval * (tau2_sigma))
+
+    A_lower_ci = "{:.5f}".format(A_lower_ci)
+    A_upper_ci = "{:.5f}".format(A_upper_ci)
+    B_lower_ci = "{:.5f}".format(B_lower_ci)
+    B_upper_ci = "{:.5f}".format(B_upper_ci)
+    tau1_lower_ci = "{:.5f}".format(tau1_lower_ci)
+    tau1_upper_ci = "{:.5f}".format(tau1_upper_ci)
+    tau2_lower_ci = "{:.5f}".format(tau2_lower_ci)
+    tau2_upper_ci = "{:.5f}".format(tau2_upper_ci)
+    C_lower_ci = "{:.5f}".format(C_lower_ci)
+    C_upper_ci = "{:.5f}".format(C_upper_ci)
+
+    if tau1 > tau2:
+        tau_slow = tau1
+        tau_fast = tau2
+        A_slow = A
+        A_fast = B
+
+        tau_slow_ci = str('(' + str(tau1_lower_ci) + ' ,' + str(tau1_upper_ci) + ')')
+        tau_fast_ci = str('(' + str(tau2_lower_ci) + ' ,' + str(tau2_upper_ci) + ')')
+        A_fast_ci = str('(' + str(B_lower_ci) + ' ,' + str(B_upper_ci) + ')')
+        A_slow_ci = str('(' + str(A_lower_ci) + ' ,' + str(A_upper_ci) + ')')
+        C_ci = str('(' + str(C_lower_ci) + ' ,' + str(C_upper_ci) + ')')
+
+        Af_percent = A_fast / (A_fast + A_slow)
+    else:
+        tau_slow = tau2
+        tau_fast = tau1
+        A_slow = B
+        A_fast = A
+
+        tau_slow_ci = str('(' + str(tau2_lower_ci) + ' ,' + str(tau2_upper_ci) + ')')
+        tau_fast_ci = str('(' + str(tau1_lower_ci) + ' ,' + str(tau1_upper_ci) + ')')
+        A_fast_ci = str('(' + str(A_lower_ci) + ' ,' + str(A_upper_ci) + ')')
+        A_slow_ci = str('(' + str(B_lower_ci) + ' ,' + str(B_upper_ci) + ')')
+        C_ci = str('(' + str(C_lower_ci) + ' ,' + str(C_upper_ci) + ')')
+
+        Af_percent = A_fast / (A_fast + A_slow)
+
+    if summary_sweep_voltage > -80:
+        warning = generate_warnings(A_fast, A_slow, tau_fast, tau_slow, actual_sweep, summary_sweep, sweep_length, max(model), rsquare, rsq_thresh, amp_thresh, summary_sweep_voltage, sweep_voltage)
+    else:
+        warning = generate_neg_summary_warnings(A_fast, A_slow, tau_fast, tau_slow, actual_sweep, summary_sweep, summary_sweep_voltage, sweep_voltage)
+
+    t_weighted = None
+    if abs(A + B) > 0.0:
+        t_weighted = (A * tau1 + B * tau2) / (A + B)
+    if not warning and (actual_sweep == summary_sweep):
+        neg50mVTW = t_weighted
+
+
+def ssDeact_fit(well_widget, control_widget):
+#def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
     # Initialise return value
 
     #print(cursor_start)
     neg50mVTW = 'N/A'
 
-    total_sweeps = num_sweeps
-    '''
+    #total_sweeps = num_sweeps
+
     data = well_widget.sweep_currents
     time_secs = well_widget.sweep_times
     num_sweeps = well_widget.num_sweeps
@@ -270,7 +538,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
     amp_thresh = control_widget.amp_thresh
     cursor_start = control_widget.cursor_start
     cursor_end = control_widget.cursor_end
-    '''
+
     sweep_length = cursor_end-cursor_start
 
     start_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= cursor_start]
@@ -324,10 +592,23 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
         parameter_data[i].append('Sweep' + str(sw))
 
     # Start at index 1 and iterate every second column so not to analyse voltage columns
+    global rsquare
     rsquare = -1
-    analyse_neg = 0
+    #analyse_neg = 0
     warning = 'N/A'
 
+    global analyse_neg
+    analyse_neg = 0
+
+
+    num_cpus = int(multiprocessing.cpu_count())
+    pool = multiprocessing.Pool(num_cpus)
+
+    #sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length, sweepData, orig_time_secs, start_time, end_time, summary_sweep_voltage, amp_thresh, rsq_thresh
+
+    pool.starmap(work, zip(well_widget.sweep_pass_qc_array, voltage_array, itertools.repeat(summary_sweep), sweepNumArray,itertools.repeat(sweep_length), data, itertools.repeat(orig_time_secs), itertools.repeat(start_time), itertools.repeat(end_time), itertools.repeat(summary_sweep_voltage), itertools.repeat(amp_thresh), itertools.repeat(rsq_thresh)))
+
+    '''
     for sweep in range(0, num_sweeps):
         if sweep_pass_qc_array[sweep] == 0:
             continue
@@ -368,9 +649,9 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
                     continue
 
         # Now check if there is a capacitive spike. If yes then trim time and current data again
-        '''
-        Use the minimum or maximum, depending on the curve shape, to trim the best
-        '''
+        
+        #Use the minimum or maximum, depending on the curve shape, to trim the best
+        
         # if actual_sweep < 11:
         if sweep_voltage > -80:
             max_current = max(sweepData)
@@ -600,7 +881,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
             parameter_data[actual_sweep].append(new_time_secs[-1])
         parameter_data[actual_sweep].append(rsquare)
         parameter_data[actual_sweep].append(warning)
-
+    '''
 
     # Post quality control analysis now being performed on slow/fast tau trends and idenitfying outliers
     [parameter_data, include_summary] = post_analysis_qc(voltage_array, parameter_data, wellID, 'weighted', summary_sweep_voltage)
