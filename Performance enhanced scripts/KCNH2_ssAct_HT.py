@@ -5,6 +5,8 @@ from ssAct_fit import ssAct_fit
 import csv
 import time
 import math
+import multiprocessing
+import itertools
 
 
 def append_summary_results(variant_summary_table, variant_summary_wells, summary_table, no_well_summary_table,
@@ -66,6 +68,10 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
 
     return [summary_table, no_well_summary_table]
 
+
+
+def work(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+    [pos40mVCD, returnV05, returnDG, returnK, returnz] = ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
 
 
 # def high_throughput(parent_dir, success_qc_dir, control_dir, filter, smooth, rsquare, variant_name_file, start_voltage,voltage_step_interval, summary_voltage, full_analysis, total_sweeps, analysis_type, srvr_analysis, drug_control):
@@ -138,6 +144,14 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
             
     '''
     #count = 1
+
+    data = []
+    time_secs = []
+    num_sweeps = []
+    wellIDs = []
+    sweep_pass_qc_array = []
+    sweep_cap_array = []
+
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             wellID = well_widgets[row, col].wellID
@@ -145,8 +159,13 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
             #print(count)
             #count = count + 1
             if analysis_type == 'ssAct':
-                [pos40mVCD, returnV05, returnDG, returnK, returnz] = ssAct_fit(well_widgets[row, col], control_widget)
-
+                #[pos40mVCD, returnV05, returnDG, returnK, returnz] = ssAct_fit(well_widgets[row, col], control_widget)
+                data.append(well_widgets[row, col].sweep_currents)
+                sweep_pass_qc_array.append(well_widgets[row, col].sweep_pass_qc_array)
+                time_secs.append(well_widgets[row, col].sweep_times)
+                num_sweeps.append(well_widgets[row, col].num_sweeps)
+                wellIDs.append(well_widgets[row, col].wellID)
+                sweep_cap_array.append(well_widgets[row, col].sweep_cap_array)
                 '''
                 if pos40mVCD != 'N/A':
                     variant_summary_table = np.append(variant_summary_table, pos40mVCD)
@@ -193,6 +212,9 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
                                                                                     z_no_well_summary_table, [],
                                                                                     analysis_type)
         '''
+    num_cpus = int(multiprocessing.cpu_count())
+    pool = multiprocessing.Pool(num_cpus)
+    pool.starmap(work, zip(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
 
     '''
      

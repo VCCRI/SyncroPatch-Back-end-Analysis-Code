@@ -37,15 +37,34 @@ def work(wellID, num_samples, num_sweeps, json_data, input_folder, start_index, 
     return data
 
 class ControlWidget():
-    def __init__(self):
+    def __init__(self, protocol):
         super(ControlWidget, self).__init__()
-        self.rsq_thresh = 0.85
-        self.summary_sweep_voltage = -50
-        self.amp_thresh = 100
 
-        #ssDeact
-        self.cursor_start = 1.2
-        self.cursor_end = 4.2
+        if protocol == 'ssDeact':
+            self.rsq_thresh = 0.85
+            self.summary_sweep_voltage = -50
+            self.amp_thresh = 100
+
+            #ssDeact
+            self.cursor_start = 1.2
+            self.cursor_end = 4.2
+        elif protocol == 'ssAct':
+            self.rsq_thresh = 0.85
+            self.summary_sweep_voltage = 40
+            self.amp_thresh = 100
+
+
+            self.cursor_start = 1.205
+            self.cursor_end = 1.3
+        elif protocol == 'Onset':
+            self.rsq_thresh = 0.85
+            self.summary_sweep_voltage = 0
+            self.amp_thresh = 100
+
+            self.cursor_start = 1.175
+            self.cursor_end = 1.2
+            self.neg_volt_cursor_start = 1.175
+            self.neg_volt_cursor_end = 1.22
 
         #ssAct
         #self.cursor_start = 1.205
@@ -54,8 +73,7 @@ class ControlWidget():
         #Onset
         #self.cursor_start = 1.175
         #self.cursor_end = 1.2
-        self.neg_volt_cursor_start = 1.175
-        self.neg_volt_cursor_end = 1.22
+
 
 
 class PlateWidget():
@@ -207,17 +225,19 @@ def main():
     #input_folder = os.path.join('C:\\', 'Users', 'j.farr', 'Documents', 'hERG_ssDeact_3s_AN_11.45.32')
     #input_folder = os.path.join('/mnt','syncropatch','Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
 
-    input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
+    input_folder = os.path.join('/datadrive', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
     #input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssAct_1s_50us_AN_11.42.11')
     #input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_Inact_Onset_AN_11.51.10')
 
 
 
-    c = ControlWidget()
+    c = ControlWidget('ssDeact')
+    #c = ControlWidget('ssAct')
+    #c = ControlWidget('Onset')
     p = PlateWidget(input_folder)
 
     tic = time.time()
-    high_throughput_ssDeact(os.path.join('/mnt','syncropatch','Clinical_variant_Brett',), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssDeact Fit')
+    high_throughput_ssDeact(os.path.join('/datadrive','syncropatch','Clinical_variant_Brett',), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssDeact Fit')
     #high_throughput_ssAct(os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', ), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssAct')
     #high_throughput_onset_inact(os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', ), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'Onset')
 

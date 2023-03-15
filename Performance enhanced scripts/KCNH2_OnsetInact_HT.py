@@ -5,7 +5,8 @@ from onset_inact_fit import onset_inact_fit
 import csv
 import time
 import math
-
+import multiprocessing
+import itertools
 
 def append_summary_results(variant_summary_table, variant_summary_wells, summary_table, no_well_summary_table,
                            variant_peak_table, analysis):
@@ -180,6 +181,8 @@ def prompt_user(filename_prompt, file_dir, data_dir, summary):
         os.mkdir(dir_name)
         return dir_name
 
+def work(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end, neg_volt_cursor_start, neg_volt_cursor_end):
+    [zeromVtau, peak_current] = onset_inact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end, neg_volt_cursor_start, neg_volt_cursor_end)
 
 # def high_throughput(parent_dir, success_qc_dir, control_dir, filter, smooth, rsquare, variant_name_file, start_voltage,voltage_step_interval, summary_voltage, full_analysis, total_sweeps, analysis_type, srvr_analysis, drug_control):
 def high_throughput_onset_inact(parent_dir, plate_name, well_widgets, control_widget, num_rows, num_cols, analysis_type):
@@ -230,6 +233,12 @@ def high_throughput_onset_inact(parent_dir, plate_name, well_widgets, control_wi
     '''
 
     #count = 1
+    data = []
+    time_secs = []
+    num_sweeps = []
+    wellIDs = []
+    sweep_pass_qc_array = []
+
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             wellID = well_widgets[row, col].wellID
@@ -237,13 +246,18 @@ def high_throughput_onset_inact(parent_dir, plate_name, well_widgets, control_wi
             #print(count)
             #count = count+1
             if analysis_type == 'Onset':
-                [zeromVtau, peak_current] = onset_inact_fit(well_widgets[row, col], control_widget)
+                #[zeromVtau, peak_current] = onset_inact_fit(well_widgets[row, col], control_widget)
                 '''
                 if zeromVtau != 'N/A' and variant != 'neg_ctrl':
                     variant_summary_table = np.append(variant_summary_table, zeromVtau)
                     variant_summary_wells = np.append(variant_summary_wells, wellID)
                     variant_peak_table = np.append(variant_peak_table, peak_current)
                 '''
+                data.append(well_widgets[row, col].sweep_currents)
+                sweep_pass_qc_array.append(well_widgets[row, col].sweep_pass_qc_array)
+                time_secs.append(well_widgets[row, col].sweep_times)
+                num_sweeps.append(well_widgets[row, col].num_sweeps)
+                wellIDs.append(well_widgets[row, col].wellID)
 
         '''
         if analysis_type == 'Onset':
@@ -251,6 +265,9 @@ def high_throughput_onset_inact(parent_dir, plate_name, well_widgets, control_wi
                 [summary_table, no_well_summary_table] = append_summary_results(variant_summary_table, variant_summary_wells, summary_table, no_well_summary_table, variant_peak_table, analysis_type)
         '''
 
+    num_cpus = int(multiprocessing.cpu_count())
+    pool = multiprocessing.Pool(num_cpus)
+    pool.starmap(work, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end), itertools.repeat(control_widget.neg_volt_cursor_start), itertools.repeat(control_widget.neg_volt_cursor_end)))
 
     '''
     # Now write the output
