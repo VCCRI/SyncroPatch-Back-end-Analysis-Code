@@ -360,7 +360,7 @@ def therm_fit_analysis(voltage_array, norm_currs, rsq_thresh, returnDG, returnz,
 
 
 #def ssAct_fit(well_widget, control_widget):
-def ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+def ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, variant, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
     # Initialise return value
     pos40mVCD = 'N/A'
     returnV05 = 'unset'

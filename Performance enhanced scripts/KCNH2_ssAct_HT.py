@@ -70,8 +70,8 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
 
 
 
-def work(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
-    [pos40mVCD, returnV05, returnDG, returnK, returnz] = ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
+def work(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, variant, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+    [pos40mVCD, returnV05, returnDG, returnK, returnz] = ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, variant, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
 
 
 # def high_throughput(parent_dir, success_qc_dir, control_dir, filter, smooth, rsquare, variant_name_file, start_voltage,voltage_step_interval, summary_voltage, full_analysis, total_sweeps, analysis_type, srvr_analysis, drug_control):
@@ -151,6 +151,7 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
     wellIDs = []
     sweep_pass_qc_array = []
     sweep_cap_array = []
+    variants = []
 
     for row in range(0, num_rows):
         for col in range(0, num_cols):
@@ -166,6 +167,7 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
                 num_sweeps.append(well_widgets[row, col].num_sweeps)
                 wellIDs.append(well_widgets[row, col].wellID)
                 sweep_cap_array.append(well_widgets[row, col].sweep_cap_array)
+                variants.append(well_widgets[row, col].variant)
                 '''
                 if pos40mVCD != 'N/A':
                     variant_summary_table = np.append(variant_summary_table, pos40mVCD)
@@ -214,7 +216,7 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
         '''
     num_cpus = int(multiprocessing.cpu_count())
     pool = multiprocessing.Pool(num_cpus)
-    pool.starmap(work, zip(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
+    pool.starmap(work, zip(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, variants, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
 
     '''
      
