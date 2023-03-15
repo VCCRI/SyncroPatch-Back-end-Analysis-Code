@@ -228,8 +228,8 @@ def onset_inact_fit(well_widget, control_widget):
 
     total_sweeps = num_sweeps
 
-    #neg_volt_cursor_start = control_widget.neg_volt_cursor_start
-    #neg_volt_cursor_end = control_widget.neg_volt_cursor_end
+    neg_volt_cursor_start = control_widget.neg_volt_cursor_start
+    neg_volt_cursor_end = control_widget.neg_volt_cursor_end
 
 
     time_indx_list = [i for i in range(len(time_secs)) if cursor_end >= time_secs[i] >= cursor_start]
