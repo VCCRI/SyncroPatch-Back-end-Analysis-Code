@@ -206,14 +206,14 @@ def adjust_fit(time_secs, sweepData, p0, pr):
     return [new_time_secs, sweepData, params, rsquare, model, cov]
 
 
-#def onset_inact_fit(well_widget, control_widget):
-def onset_inact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end, neg_volt_cursor_start, neg_volt_cursor_end):
+def onset_inact_fit(well_widget, control_widget):
+#def onset_inact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end, neg_volt_cursor_start, neg_volt_cursor_end):
     # Initialise return value
 
     summary_tau = 'N/A'
     summary_current = 'N/A'
 
-    '''
+
     data = well_widget.sweep_currents
     time_secs = well_widget.sweep_times
     num_sweeps = well_widget.num_sweeps
@@ -225,7 +225,7 @@ def onset_inact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rs
     amp_thresh = control_widget.amp_thresh
     cursor_start = control_widget.cursor_start
     cursor_end = control_widget.cursor_end
-    '''
+
     total_sweeps = num_sweeps
 
     #neg_volt_cursor_start = control_widget.neg_volt_cursor_start
@@ -284,8 +284,8 @@ def onset_inact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rs
 
 
     for sweep in range(0, num_sweeps):
-        #if well_widget.sweep_pass_qc_array[sweep] == 0:
-        if sweep_pass_qc_array[sweep] == 0:
+        if well_widget.sweep_pass_qc_array[sweep] == 0:
+        #if sweep_pass_qc_array[sweep] == 0:
             continue
         actual_sweep = sweep + 1
 

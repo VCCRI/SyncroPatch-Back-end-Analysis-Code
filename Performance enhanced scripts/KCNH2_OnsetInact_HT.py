@@ -231,13 +231,14 @@ def high_throughput_onset_inact(parent_dir, plate_name, well_widgets, control_wi
             num_sweeps = int(spl_name[-1])
             wellID = spl_name[-2]
     '''
-
+    '''
     #count = 1
     data = []
     time_secs = []
     num_sweeps = []
     wellIDs = []
     sweep_pass_qc_array = []
+    '''
 
     for row in range(0, num_rows):
         for col in range(0, num_cols):
@@ -246,29 +247,31 @@ def high_throughput_onset_inact(parent_dir, plate_name, well_widgets, control_wi
             #print(count)
             #count = count+1
             if analysis_type == 'Onset':
-                #[zeromVtau, peak_current] = onset_inact_fit(well_widgets[row, col], control_widget)
+                [zeromVtau, peak_current] = onset_inact_fit(well_widgets[row, col], control_widget)
                 '''
                 if zeromVtau != 'N/A' and variant != 'neg_ctrl':
                     variant_summary_table = np.append(variant_summary_table, zeromVtau)
                     variant_summary_wells = np.append(variant_summary_wells, wellID)
                     variant_peak_table = np.append(variant_peak_table, peak_current)
                 '''
+                '''
                 data.append(well_widgets[row, col].sweep_currents)
                 sweep_pass_qc_array.append(well_widgets[row, col].sweep_pass_qc_array)
                 time_secs.append(well_widgets[row, col].sweep_times)
                 num_sweeps.append(well_widgets[row, col].num_sweeps)
                 wellIDs.append(well_widgets[row, col].wellID)
+                '''
 
         '''
         if analysis_type == 'Onset':
             if variant != 'neg_ctrl':
                 [summary_table, no_well_summary_table] = append_summary_results(variant_summary_table, variant_summary_wells, summary_table, no_well_summary_table, variant_peak_table, analysis_type)
         '''
-
+    '''
     num_cpus = int(multiprocessing.cpu_count())
     pool = multiprocessing.Pool(num_cpus)
     pool.starmap(work, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end), itertools.repeat(control_widget.neg_volt_cursor_start), itertools.repeat(control_widget.neg_volt_cursor_end)))
-
+    '''
     '''
     # Now write the output
     summary_table = summary_table.transpose()
