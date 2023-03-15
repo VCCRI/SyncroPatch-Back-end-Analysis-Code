@@ -359,8 +359,8 @@ def therm_fit_analysis(voltage_array, norm_currs, rsq_thresh, returnDG, returnz,
             therm_warning, G0, z, therm_top, therm_bottom, pos40mVCD]
 
 
-#def ssAct_fit(well_widget, control_widget):
-def ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, variant, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+def ssAct_fit(well_widget, control_widget):
+#def ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, variant, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
     # Initialise return value
     pos40mVCD = 'N/A'
     returnV05 = 'unset'
@@ -368,9 +368,9 @@ def ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps,
     returnK = 'unset'
     returnz = 'unset'
 
-    total_sweeps = num_sweeps
+    #total_sweeps = num_sweeps
 
-    '''
+
     data = well_widget.sweep_currents
     time_secs = well_widget.sweep_times
     num_sweeps = well_widget.num_sweeps
@@ -384,7 +384,7 @@ def ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps,
     cursor_start = control_widget.cursor_start
     cursor_end = control_widget.cursor_end
     sweep_length = cursor_end - cursor_start
-    '''
+
 
     start_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= cursor_start]
     start_time = start_time_indx_list[0]
@@ -425,15 +425,15 @@ def ssAct_fit(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps,
     voltage_array =  np.array([])
 
     for sweep in range(0, num_sweeps):
-        #if well_widget.sweep_pass_qc_array[sweep] == 0:
-        if sweep_pass_qc_array[sweep] == 0:
+        if well_widget.sweep_pass_qc_array[sweep] == 0:
+        #if sweep_pass_qc_array[sweep] == 0:
             continue
         actual_sweep = sweep + 1
 
         #capacitance = well_widget.sweep_cap_array[sweep]
 
-
-        capacitance = sweep_cap_array[sweep]
+        #capacitance = sweep_cap_array[sweep]
+        capacitance = well_widget.sweep_cap_array[sweep]
         sweepData = data[sweep, :]
 
         sweepData = sweepData[start_time:end_time]

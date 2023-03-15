@@ -145,6 +145,7 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
     '''
     #count = 1
 
+    '''
     data = []
     time_secs = []
     num_sweeps = []
@@ -152,6 +153,7 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
     sweep_pass_qc_array = []
     sweep_cap_array = []
     variants = []
+    '''
 
     for row in range(0, num_rows):
         for col in range(0, num_cols):
@@ -160,7 +162,9 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
             #print(count)
             #count = count + 1
             if analysis_type == 'ssAct':
-                #[pos40mVCD, returnV05, returnDG, returnK, returnz] = ssAct_fit(well_widgets[row, col], control_widget)
+                [pos40mVCD, returnV05, returnDG, returnK, returnz] = ssAct_fit(well_widgets[row, col], control_widget)
+
+                '''
                 data.append(well_widgets[row, col].sweep_currents)
                 sweep_pass_qc_array.append(well_widgets[row, col].sweep_pass_qc_array)
                 time_secs.append(well_widgets[row, col].sweep_times)
@@ -168,6 +172,7 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
                 wellIDs.append(well_widgets[row, col].wellID)
                 sweep_cap_array.append(well_widgets[row, col].sweep_cap_array)
                 variants.append(well_widgets[row, col].variant)
+                '''
                 '''
                 if pos40mVCD != 'N/A':
                     variant_summary_table = np.append(variant_summary_table, pos40mVCD)
@@ -214,10 +219,12 @@ def high_throughput_ssAct(parent_dir, plate_name, well_widgets, control_widget, 
                                                                                     z_no_well_summary_table, [],
                                                                                     analysis_type)
         '''
+
+    '''
     num_cpus = int(multiprocessing.cpu_count())
     pool = multiprocessing.Pool(num_cpus)
     pool.starmap(work, zip(time_secs, data, sweep_pass_qc_array, sweep_cap_array, num_sweeps, variants, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
-
+    '''
     '''
      
     # Now write the output
