@@ -586,7 +586,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
     parameter_data[0].append('Fit Warnings')
 
     # create an 18 row result list
-    for i in range(1, total_sweeps + 1):
+    for i in range(1, num_sweeps + 1):
         parameter_data.append([])
         sw = i
         parameter_data[i].append('Sweep' + str(sw))
