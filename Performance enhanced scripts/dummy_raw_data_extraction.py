@@ -125,7 +125,13 @@ class PlateWidget():
                 sweep_times = self.well_widgets[row - 1, col - 1].sweep_times
                 wellIDs.append(self.well_widgets[row - 1, col - 1].wellID)
 
-
+        print(len(wellIDs))
+        print(num_samples)
+        print(num_sweeps)
+        print(self.json_data)
+        print(self.input_folder)
+        print(start_index)
+        print(end_index)
         num_cpus = int(multiprocessing.cpu_count())
         # num_cpus = 1
         print(num_cpus)
