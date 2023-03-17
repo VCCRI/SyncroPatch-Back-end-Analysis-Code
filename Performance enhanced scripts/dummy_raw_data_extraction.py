@@ -132,11 +132,13 @@ class PlateWidget():
         print(self.input_folder)
         print(start_index)
         print(end_index)
+
         num_cpus = int(multiprocessing.cpu_count())
         # num_cpus = 1
         print(num_cpus)
         pool = multiprocessing.Pool(num_cpus)
         data = pool.starmap(work, zip(wellIDs, itertools.repeat(num_samples), itertools.repeat(num_sweeps), itertools.repeat(self.json_data), itertools.repeat(self.input_folder), itertools.repeat(start_index), itertools.repeat(end_index)))
+        pool.close()
 
         count = 0
         for col in range(1, self.json_data.column_count + 1):
