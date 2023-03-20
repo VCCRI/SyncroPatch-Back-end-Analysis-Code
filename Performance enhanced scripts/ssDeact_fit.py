@@ -255,7 +255,7 @@ def peak_current_smaller_threshold(times, currents, peak_current_parameter, star
 
 
 
-
+'''
 def work(sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length, sweepData, orig_time_secs, start_time, end_time, summary_sweep_voltage, amp_thresh, rsq_thresh):
 
 
@@ -516,7 +516,7 @@ def work(sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length
         t_weighted = (A * tau1 + B * tau2) / (A + B)
     if not warning and (actual_sweep == summary_sweep):
         neg50mVTW = t_weighted
-
+'''
 
 #def ssDeact_fit(well_widget, control_widget):
 def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
