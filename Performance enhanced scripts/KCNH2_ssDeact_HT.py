@@ -57,7 +57,7 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
 
     return summary_table
 
-def work(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+def work2(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
 
     neg50mVTW = ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
 
@@ -200,9 +200,9 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     print(len(num_sweeps))
     print(len(wellIDs))
     num_cpus = int(multiprocessing.cpu_count())
-    pool = multiprocessing.Pool(processes=20)
-    pool.starmap(work, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
-    pool.close()
+    pool2 = multiprocessing.Pool(processes=20)
+    pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
+    pool2.close()
 
     '''
                 if neg50mVTW != 'N/A' and variant != 'neg_ctrl':
