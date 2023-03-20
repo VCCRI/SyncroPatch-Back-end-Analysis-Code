@@ -129,7 +129,7 @@ class PlateWidget():
         num_cpus = int(multiprocessing.cpu_count())
         # num_cpus = 1
         print(num_cpus)
-        pool = multiprocessing.Pool(20)
+        pool = multiprocessing.Pool(16)
         data = pool.starmap(work, zip(wellIDs, itertools.repeat(num_samples), itertools.repeat(num_sweeps), itertools.repeat(self.json_data), itertools.repeat(self.input_folder), itertools.repeat(start_index), itertools.repeat(end_index)))
         pool.close()
 
@@ -247,7 +247,85 @@ def main():
     print(time.time()-tic)
 
 
+'''
+    def get_all_sweeps_current_data(self):
+        if self.json_data.total_sweeps < self.json_data.sweeps_per_file:
+            offset = np.nan
+            length = np.nan
 
+            path = f"{self.data_path}/" + self.json_data.dat_files[self.json_data.total_sweeps // self.json_data.sweeps_per_file]
+            for sweep in range(self.json_data.total_sweeps):
+                if (self.json_data.valid_sweeps[sweep]):
+                    if np.isnan(offset):
+                        offset = (((((sweep % self.json_data.sweeps_per_file) *
+                            self.json_data.column_count + self.col) *
+                            self.json_data.row_count + self.row) *
+                            self.int16_size + self.json_data.data_count - 1) *
+                            self.json_data.sample_count * self.int16_size)
+                    if np.isnan(length):
+                        length = self.json_data.sample_count * self.int16_size
+                    else:
+                        length = length+self.json_data.sample_count * self.int16_size
+                else:
+                    #print('invalid sweep not sure what to do')
+                    continue
+            file_section = File_Section(path, offset, length)
+            return list(map(lambda n:
+                            n * self.json_data.column_scales[self.col],
+                            np.frombuffer(bytearray(file_section.get()), dtype=np.int16)))
+
+        else:
+            offset1 = np.nan
+            length1 = np.nan
+
+            path1 = f"{self.data_path}/" + self.json_data.dat_files[
+                self.json_data.total_sweeps // self.json_data.sweeps_per_file]
+            for sweep in range(self.json_data.sweeps_per_file):
+                if (self.json_data.valid_sweeps[sweep]):
+                    if np.isnan(offset1):
+                        offset1 = (((((sweep % self.json_data.sweeps_per_file) *
+                                     self.json_data.column_count + self.col) *
+                                    self.json_data.row_count + self.row) *
+                                   self.int16_size + self.json_data.data_count - 1) *
+                                  self.json_data.sample_count * self.int16_size)
+                    if np.isnan(length1):
+                        length1 = self.json_data.sample_count * self.int16_size
+                    else:
+                        length1 = length1 + self.json_data.sample_count * self.int16_size
+                else:
+                    # print('invalid sweep not sure what to do')
+                    continue
+            file_section1 = File_Section(path1, offset1, length1)
+
+            data1 = list(map(lambda n:
+                            n * self.json_data.column_scales[self.col],
+                            np.frombuffer(bytearray(file_section1.get()), dtype=np.int16)))
+
+            offset2 = np.nan
+            length2 = np.nan
+
+            path2 = f"{self.data_path}/" + self.json_data.dat_files[
+                self.json_data.total_sweeps // self.json_data.sweeps_per_file]
+            for sweep in range(self.json_data.sweeps_per_file, self.json_data.total_sweeps):
+                if (self.json_data.valid_sweeps[sweep]):
+                    if np.isnan(offset1):
+                        offset2 = (((((sweep % self.json_data.sweeps_per_file) *
+                                      self.json_data.column_count + self.col) *
+                                     self.json_data.row_count + self.row) *
+                                    self.int16_size + self.json_data.data_count - 1) *
+                                   self.json_data.sample_count * self.int16_size)
+                    if np.isnan(length2):
+                        length2 = self.json_data.sample_count * self.int16_size
+                    else:
+                        length2 = length2 + self.json_data.sample_count * self.int16_size
+                else:
+                    # print('invalid sweep not sure what to do')
+                    continue
+            file_section2 = File_Section(path2, offset2, length1)
+            data2 = list(map(lambda n:
+                             n * self.json_data.column_scales[self.col],
+                             np.frombuffer(bytearray(file_section2.get()), dtype=np.int16)))
+'''
 
 if __name__ == "__main__":
     main()
