@@ -125,18 +125,11 @@ class PlateWidget():
                 sweep_times = self.well_widgets[row - 1, col - 1].sweep_times
                 wellIDs.append(self.well_widgets[row - 1, col - 1].wellID)
 
-        print(len(wellIDs))
-        print(num_samples)
-        print(num_sweeps)
-        print(self.json_data)
-        print(self.input_folder)
-        print(start_index)
-        print(end_index)
 
         num_cpus = int(multiprocessing.cpu_count())
         # num_cpus = 1
         print(num_cpus)
-        pool = multiprocessing.Pool(num_cpus)
+        pool = multiprocessing.Pool(20)
         data = pool.starmap(work, zip(wellIDs, itertools.repeat(num_samples), itertools.repeat(num_sweeps), itertools.repeat(self.json_data), itertools.repeat(self.input_folder), itertools.repeat(start_index), itertools.repeat(end_index)))
         pool.close()
 
