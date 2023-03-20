@@ -132,13 +132,14 @@ class PlateWidget():
         pool = multiprocessing.Pool(processes=20)
         data = pool.starmap(work, zip(wellIDs, itertools.repeat(num_samples), itertools.repeat(num_sweeps), itertools.repeat(self.json_data), itertools.repeat(self.input_folder), itertools.repeat(start_index), itertools.repeat(end_index)))
         pool.close()
+        pool.join()
 
         count = 0
         for col in range(1, self.json_data.column_count + 1):
             for row in range(1, self.json_data.row_count + 1):
                 self.well_widgets[row - 1, col - 1].sweep_currents[0:self.well_widgets[row - 1, col - 1].num_sweeps] = data[count]
                 count += 1
-
+        del data
         print(time.time()-self.tic)
 
 class WellWidgetPYQTGraph():
