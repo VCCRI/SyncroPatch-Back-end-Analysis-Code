@@ -229,6 +229,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
 
     num_tasks = 0
+    print_pool = 1
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             wellID = well_widgets[row, col].wellID
@@ -253,9 +254,11 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
                                          itertools.repeat(control_widget.amp_thresh),
                                          itertools.repeat(control_widget.cursor_start),
                                          itertools.repeat(control_widget.cursor_end)))
-
-                pool2.close()
+                print(print_pool)
+                print_pool = print_pool+1
+                #
                 pool2.join()
+                #pool2.close()
 
                 num_tasks = 0
                 data = []
