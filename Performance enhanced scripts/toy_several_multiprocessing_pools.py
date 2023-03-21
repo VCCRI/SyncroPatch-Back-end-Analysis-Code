@@ -21,15 +21,25 @@ def work1(array, length):
 def process2():
     print('process2')
     pool = multiprocessing.Pool(25)
-    pool.starmap(work2, zip(itertools.repeat(range(20, 46)), itertools.repeat(25)))
+
+    data = []
+    for i in range(0, 25):
+        data.append([range(20, 46)])
+
+    pool.starmap(work2, zip(data, itertools.repeat(25)))
 
     pool.close()
     pool.join()
 
 def process1():
     print('process1')
+
+    data = []
+    for i in range(0, 20):
+        data.append([range(20)])
+
     pool = multiprocessing.Pool(20)
-    pool.starmap(work1, zip(itertools.repeat(range(20)), itertools.repeat(20)))
+    pool.starmap(work1, zip(data, itertools.repeat(20)))
 
     pool.close()
     pool.join()
