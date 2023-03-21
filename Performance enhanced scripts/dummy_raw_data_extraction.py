@@ -132,7 +132,7 @@ class PlateWidget():
         pool = multiprocessing.Pool(processes=20)
         data = pool.starmap(work, zip(wellIDs, itertools.repeat(num_samples), itertools.repeat(num_sweeps), itertools.repeat(self.json_data), itertools.repeat(self.input_folder), itertools.repeat(start_index), itertools.repeat(end_index)))
 
-        pool.join()
+        #pool.join()
         pool.terminate()
 
         count = 0
