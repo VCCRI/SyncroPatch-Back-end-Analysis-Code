@@ -256,9 +256,9 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
                                          itertools.repeat(control_widget.cursor_end)))
                 print(print_pool)
                 print_pool = print_pool+1
-                #
+                pool2.close()
                 pool2.join()
-                #pool2.close()
+                #
 
                 num_tasks = 0
                 data = []
