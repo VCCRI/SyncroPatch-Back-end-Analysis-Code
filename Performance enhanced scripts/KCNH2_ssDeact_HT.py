@@ -199,9 +199,11 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     pool2 = multiprocessing.Pool(processes=20)
     #pool2 = multiprocessing.Semaphore(20)
     pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
+    
     pool2.close()
     '''
 
+    '''
     pool = multiprocessing.Pool(20)
     results = []
 
@@ -223,6 +225,15 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     for result in results:
         result.wait()
 
+    pool.close()
+    pool.join()
+    '''
+
+    with multiprocessing.Pool(20) as pool:
+        # call the function for each item in parallel
+        for result in pool.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
+            result.wait()
+            
     pool.close()
     pool.join()
 
