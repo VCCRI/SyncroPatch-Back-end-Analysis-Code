@@ -203,7 +203,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     pool2.close()
     '''
 
-
+    '''
     pool = multiprocessing.Pool(20)
     results = []
 
@@ -223,9 +223,50 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
                 result.wait()
                 results.append(result)
 
-
     pool.close()
     pool.join()
+    '''
+
+
+    num_tasks = 0
+    for row in range(0, num_rows):
+        for col in range(0, num_cols):
+            wellID = well_widgets[row, col].wellID
+            variant = well_widgets[row, col].variant
+            num_tasks = num_tasks+1
+
+            if analysis_type == 'ssDeact Fit':
+                # neg50mVTW = ssDeact_fit(well_widgets[row, col], control_widget)
+                data.append(well_widgets[row, col].sweep_currents)
+                sweep_pass_qc_array.append(well_widgets[row, col].sweep_pass_qc_array)
+                time_secs.append(well_widgets[row, col].sweep_times)
+                num_sweeps.append(well_widgets[row, col].num_sweeps)
+                wellIDs.append(well_widgets[row, col].wellID)
+
+            if num_tasks == 20:
+                num_cpus = int(multiprocessing.cpu_count())
+                pool2 = multiprocessing.Pool(processes=20)
+                # pool2 = multiprocessing.Semaphore(20)
+                pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs,
+                                         itertools.repeat(control_widget.rsq_thresh),
+                                         itertools.repeat(control_widget.summary_sweep_voltage),
+                                         itertools.repeat(control_widget.amp_thresh),
+                                         itertools.repeat(control_widget.cursor_start),
+                                         itertools.repeat(control_widget.cursor_end)))
+
+                pool2.close()
+                pool2.join()
+
+                num_tasks = 0
+                data = []
+                time_secs = []
+                num_sweeps = []
+                wellIDs = []
+                sweep_pass_qc_array = []
+
+
+
+
     '''
     for row in range(0, num_rows):
         for col in range(0, num_cols):
