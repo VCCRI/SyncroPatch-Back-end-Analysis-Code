@@ -7,14 +7,14 @@ import time
 def work2(array, length):
     print(array)
     print(length)
-    time.sleep(5)
+    time.sleep(50)
     return
 
 
 def work1(array, length):
     print(array)
     print(length)
-    time.sleep(5)
+    time.sleep(50)
     return
 
 
