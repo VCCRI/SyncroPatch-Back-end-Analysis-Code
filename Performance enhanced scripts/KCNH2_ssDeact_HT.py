@@ -203,7 +203,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     pool2.close()
     '''
 
-    '''
+
     pool = multiprocessing.Pool(20)
     results = []
 
@@ -220,10 +220,9 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
                 num_sweeps.append(well_widgets[row, col].num_sweeps)
                 wellIDs.append(well_widgets[row, col].wellID)
                 result = pool.apply_async(work2, args=(well_widgets[row, col].sweep_times, well_widgets[row, col].sweep_currents, well_widgets[row, col].sweep_pass_qc_array, well_widgets[row, col].num_sweeps, well_widgets[row, col].wellID, control_widget.rsq_thresh, control_widget.summary_sweep_voltage, control_widget.amp_thresh, control_widget.cursor_start, control_widget.cursor_end))
+                result.wait()
                 results.append(result)
 
-    for result in results:
-        result.wait()
 
     pool.close()
     pool.join()
@@ -243,13 +242,15 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     with multiprocessing.Pool(20) as pool:
         # call the function for each item in parallel
-        for result in pool.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end))):
+
+        #for result in pool.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end))):
+            
             print(result)
             result.wait()
 
     pool.close()
     pool.join()
-
+    '''
     '''
                 if neg50mVTW != 'N/A' and variant != 'neg_ctrl':
                     variant_summary_table = np.append(variant_summary_table, neg50mVTW)
