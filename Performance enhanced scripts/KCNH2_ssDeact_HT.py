@@ -177,8 +177,6 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     wellIDs = []
     sweep_pass_qc_array = []
 
-
-    '''
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             wellID = well_widgets[row, col].wellID
@@ -201,7 +199,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
     
     pool2.close()
-    '''
+
 
     '''
     pool = multiprocessing.Pool(20)
@@ -227,7 +225,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     pool.join()
     '''
 
-
+    '''
     num_tasks = 0
     print_pool = 1
     for row in range(0, num_rows):
@@ -267,7 +265,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
                 wellIDs = []
                 sweep_pass_qc_array = []
 
-
+    '''
 
 
     '''
