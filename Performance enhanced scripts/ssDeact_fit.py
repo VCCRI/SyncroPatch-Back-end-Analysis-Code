@@ -255,7 +255,7 @@ def peak_current_smaller_threshold(times, currents, peak_current_parameter, star
 
 
 
-'''
+
 def work(sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length, sweepData, orig_time_secs, start_time, end_time, summary_sweep_voltage, amp_thresh, rsq_thresh):
 
 
@@ -516,17 +516,17 @@ def work(sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length
         t_weighted = (A * tau1 + B * tau2) / (A + B)
     if not warning and (actual_sweep == summary_sweep):
         neg50mVTW = t_weighted
-'''
 
-#def ssDeact_fit(well_widget, control_widget):
-def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
+
+def ssDeact_fit(well_widget, control_widget):
+#def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
     # Initialise return value
 
     #print(cursor_start)
     neg50mVTW = 'N/A'
 
     #total_sweeps = num_sweeps
-    '''
+
     data = well_widget.sweep_currents
     time_secs = well_widget.sweep_times
     num_sweeps = well_widget.num_sweeps
@@ -538,7 +538,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
     amp_thresh = control_widget.amp_thresh
     cursor_start = control_widget.cursor_start
     cursor_end = control_widget.cursor_end
-    '''
+
     sweep_length = cursor_end-cursor_start
 
     start_time_indx_list = [i for i in range(len(time_secs)) if time_secs[i] >= cursor_start]
@@ -600,13 +600,17 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
     global analyse_neg
     analyse_neg = 0
 
-    '''
+
     num_cpus = int(multiprocessing.cpu_count())
-    pool = multiprocessing.Pool(num_cpus)
+    pool = multiprocessing.Pool(20)
 
     #sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length, sweepData, orig_time_secs, start_time, end_time, summary_sweep_voltage, amp_thresh, rsq_thresh
 
     pool.starmap(work, zip(well_widget.sweep_pass_qc_array, voltage_array, itertools.repeat(summary_sweep), sweepNumArray,itertools.repeat(sweep_length), data, itertools.repeat(orig_time_secs), itertools.repeat(start_time), itertools.repeat(end_time), itertools.repeat(summary_sweep_voltage), itertools.repeat(amp_thresh), itertools.repeat(rsq_thresh)))
+
+    pool.close()
+    pool.join()
+
     '''
 
     for sweep in range(0, num_sweeps):
@@ -887,5 +891,5 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
     if include_summary == 0:
         neg50mVTW = 'N/A'
-
+    '''
     return neg50mVTW
