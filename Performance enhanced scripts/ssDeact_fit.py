@@ -609,7 +609,7 @@ def ssDeact_fit(well_widget, control_widget):
 
     #sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length, sweepData, orig_time_secs, start_time, end_time, summary_sweep_voltage, amp_thresh, rsq_thresh
 
-    [params, warning, rsquare, t_weighted] = pool.starmap(work, zip(well_widget.sweep_pass_qc_array, voltage_array, itertools.repeat(summary_sweep), sweepNumArray,itertools.repeat(sweep_length), data, itertools.repeat(orig_time_secs), itertools.repeat(start_time), itertools.repeat(end_time), itertools.repeat(summary_sweep_voltage), itertools.repeat(amp_thresh), itertools.repeat(rsq_thresh)))
+    all_data = pool.starmap(work, zip(well_widget.sweep_pass_qc_array, voltage_array, itertools.repeat(summary_sweep), sweepNumArray,itertools.repeat(sweep_length), data, itertools.repeat(orig_time_secs), itertools.repeat(start_time), itertools.repeat(end_time), itertools.repeat(summary_sweep_voltage), itertools.repeat(amp_thresh), itertools.repeat(rsq_thresh)))
 
     pool.close()
     pool.join()
