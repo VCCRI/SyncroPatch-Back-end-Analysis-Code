@@ -516,6 +516,7 @@ def work(sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length
         t_weighted = (A * tau1 + B * tau2) / (A + B)
     if not warning and (actual_sweep == summary_sweep):
         neg50mVTW = t_weighted
+    return [params, warning, rsquare, t_weighted]
 
 
 def ssDeact_fit(well_widget, control_widget):
@@ -608,10 +609,12 @@ def ssDeact_fit(well_widget, control_widget):
 
     #sweep_pass_qc, sweep_voltage, summary_sweep, actual_sweep, sweep_length, sweepData, orig_time_secs, start_time, end_time, summary_sweep_voltage, amp_thresh, rsq_thresh
 
-    pool.starmap(work, zip(well_widget.sweep_pass_qc_array, voltage_array, itertools.repeat(summary_sweep), sweepNumArray,itertools.repeat(sweep_length), data, itertools.repeat(orig_time_secs), itertools.repeat(start_time), itertools.repeat(end_time), itertools.repeat(summary_sweep_voltage), itertools.repeat(amp_thresh), itertools.repeat(rsq_thresh)))
+    [params, warning, rsquare, t_weighted] = pool.starmap(work, zip(well_widget.sweep_pass_qc_array, voltage_array, itertools.repeat(summary_sweep), sweepNumArray,itertools.repeat(sweep_length), data, itertools.repeat(orig_time_secs), itertools.repeat(start_time), itertools.repeat(end_time), itertools.repeat(summary_sweep_voltage), itertools.repeat(amp_thresh), itertools.repeat(rsq_thresh)))
 
     pool.close()
     pool.join()
+
+    print('pool done')
 
     '''
 
