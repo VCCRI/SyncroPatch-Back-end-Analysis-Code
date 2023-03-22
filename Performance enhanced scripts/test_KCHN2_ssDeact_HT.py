@@ -104,7 +104,7 @@ def work2(wellID, json_data, input_folder, rsq_thresh, summary_sweep_voltage, am
                             amp_thresh, cursor_start, cursor_end)
 
 
-def high_throughput_ssDeact(parent_dir, plate_name, control_widget, num_rows, num_cols, analysis_type):
+def high_throughput_ssDeact(parent_dir, plate_name, control_widget, analysis_type):
     total_tic = time.time()
 
     if analysis_type == 'ssDeact Fit' or analysis_type == 'ssDeact CD sweep time ratio' or analysis_type == 'ssDeact CD sweep peak ratio' or analysis_type == 'ssDeact CD sweep peak':
@@ -117,7 +117,8 @@ def high_throughput_ssDeact(parent_dir, plate_name, control_widget, num_rows, nu
     print(json_filename)
     json_data = Json_Data(json_filename[0], 16, 24, 65)
 
-
+    num_rows = json_data.row_count
+    num_cols = json_data.column_count
     data = []
     time_secs = []
     num_sweeps = []
