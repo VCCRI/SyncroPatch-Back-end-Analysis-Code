@@ -96,7 +96,7 @@ def work2(wellID, json_data, input_folder, rsq_thresh, summary_sweep_voltage, am
         sweep_pass_qc_array = np.append(sweep_pass_qc_array, pass_qc)
 
         sw_curr = json_well_data.get_sweep_currents(sw)
-        data[sw, :] = sw_curr[plot_indexes[0]:plot_indexes[len(plot_indexes)-1]]
+        data[sw, :] = sw_curr[plot_indexes[0]:plot_indexes[len(plot_indexes)-1]+1]
 
 
 
