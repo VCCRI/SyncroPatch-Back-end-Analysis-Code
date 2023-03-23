@@ -27,15 +27,15 @@ def work(wellID, num_samples, num_sweeps, json_data, input_folder, start_index, 
     data = np.zeros([num_sweeps, num_samples])
 
     well = Well(json_data, input_folder, wellID, 2)
-    data = well.get_all_sweeps_current_data()
-    '''
+    #data = well.get_all_sweeps_current_data()
+
     sw = 0
     for sweep in range(0, num_sweeps):
         # print(sweep)
         sw_curr = well.get_sweep_currents(sweep)
         data[sw, :] = sw_curr[start_index:end_index+1]
         sw += 1
-    '''
+
     #return
     return data
 

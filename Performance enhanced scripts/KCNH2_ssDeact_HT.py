@@ -193,7 +193,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     
 
-
+    #print(data)
     num_cpus = int(multiprocessing.cpu_count())
     pool2 = multiprocessing.Pool(processes=20)
     #pool2 = multiprocessing.Semaphore(20)
