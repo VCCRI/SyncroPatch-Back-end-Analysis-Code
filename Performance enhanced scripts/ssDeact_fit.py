@@ -528,6 +528,8 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
     #print(cursor_start)
     neg50mVTW = 'N/A'
 
+
+
     #total_sweeps = num_sweeps
     '''
     data = well_widget.sweep_currents
