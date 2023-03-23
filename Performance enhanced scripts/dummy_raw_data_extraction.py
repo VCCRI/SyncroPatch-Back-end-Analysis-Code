@@ -207,8 +207,8 @@ class WellWidgetPYQTGraph():
         self.sweep_times = sweep_times
 
         # self.sweep_currents = np.zeros([self.num_sweeps, self.plot_sample_points])
-        #self.sweep_currents = np.zeros([self.num_sweeps, self.num_sample_points])
-        self.sweep_currents = np.array([])
+        self.sweep_currents = np.zeros([self.num_sweeps, self.num_sample_points])
+        #self.sweep_currents = np.array([])
 
         for sw in range(0, self.num_sweeps):
 
