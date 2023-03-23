@@ -58,7 +58,7 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
     return summary_table
 
 def work2(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
-    print(wellID)
+    #print(wellID)
     neg50mVTW = ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
     return neg50mVTW
 def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget, num_rows, num_cols, analysis_type):
@@ -193,12 +193,16 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     
 
-    print(data)
+    print(len(data))
+    print(len(time_secs))
+    print(len(sweep_pass_qc_array))
+
+
     num_cpus = int(multiprocessing.cpu_count())
     pool2 = multiprocessing.Pool(processes=20)
     #pool2 = multiprocessing.Semaphore(20)
     #neg_iterable = pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
-    neg_async_results = pool2.starmap_async(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs,
+    neg_async_results = pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs,
                                           itertools.repeat(control_widget.rsq_thresh),
                                           itertools.repeat(control_widget.summary_sweep_voltage),
                                           itertools.repeat(control_widget.amp_thresh),
