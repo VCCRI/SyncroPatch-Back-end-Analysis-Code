@@ -218,7 +218,7 @@ class Well():
 
         else:
             num_dat_files = int(np.ceil(self.json_data.total_sweeps/self.json_data.sweeps_per_file))
-            print(num_dat_files)
+            #print(num_dat_files)
             sweep_currents = np.zeros([self.json_data.total_sweeps, self.json_data.sample_count])
             sweep_offset = 0
             for dfile in range(0, num_dat_files):
@@ -249,9 +249,9 @@ class Well():
                                  n * self.json_data.column_scales[self.col],
                                  np.frombuffer(bytearray(file_section1.get()), dtype=np.int16)))
 
-                print('swo',sweep_offset)
+                #print('swo',sweep_offset)
                 for sweep in range(self.json_data.sweeps_per_file):
-                    print('sw',sweep)
+                    #print('sw',sweep)
                     if sweep+sweep_offset >= self.json_data.total_sweeps:
                         break
                     if (self.json_data.valid_sweeps[sweep]):
