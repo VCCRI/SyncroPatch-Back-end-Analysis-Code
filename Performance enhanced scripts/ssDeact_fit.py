@@ -623,12 +623,10 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
     print(wellID)
 
     for sweep in range(0, num_sweeps):
-        print(sweep)
         if sweep_pass_qc_array[sweep] == 0:
             continue
         actual_sweep = sweep+1
         print('wellID =', wellID, 'sweep = ', sweep, 'process =', os.getpid())
-        print(os.getpid())
         sweep_voltage = voltage_array[sweep]
 
         if sweep_voltage == -80 or sweep_voltage == -90:
