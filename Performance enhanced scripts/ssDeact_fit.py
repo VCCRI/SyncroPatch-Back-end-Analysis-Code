@@ -597,12 +597,12 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
         parameter_data[i].append('Sweep' + str(sw))
 
     # Start at index 1 and iterate every second column so not to analyse voltage columns
-    global rsquare
+    #global rsquare
     rsquare = -1
     #analyse_neg = 0
     warning = 'N/A'
 
-    global analyse_neg
+    #global analyse_neg
     analyse_neg = 0
 
 
@@ -620,7 +620,6 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
     #print('pool done')
 
-    print(wellID)
 
     for sweep in range(0, num_sweeps):
         if sweep_pass_qc_array[sweep] == 0:
