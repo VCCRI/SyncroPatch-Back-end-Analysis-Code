@@ -1,7 +1,8 @@
 FROM Python:3.9
 
-LABEL key="value"
-version value="0.1"
+LABEL module.name="SyncroPatch-Back-end-Analysis-Code"
+LABEL module.description="SyncroPatch-Back-end-Analysis-Code"
+LABEL module.version="v0.0.1"
 
 RUN apt get update && apt get install -y \
     build-essential \
