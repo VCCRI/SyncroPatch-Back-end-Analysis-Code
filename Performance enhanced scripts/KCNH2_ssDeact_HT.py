@@ -199,9 +199,9 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     print(len(time_secs))
     print(len(sweep_pass_qc_array))
 
-    from multiprocessing import set_start_method, get_context
+    from multiprocessing import get_context
 
-    set_start_method("spawn")
+
     import multiprocessing
 
     num_cpus = int(multiprocessing.cpu_count())

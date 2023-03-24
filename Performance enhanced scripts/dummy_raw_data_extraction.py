@@ -11,7 +11,7 @@ from tkinter import *
 import logging
 import time
 import glob
-import multiprocessing
+#import multiprocessing
 import itertools
 from extract_raw_data import Json_Data, Well
 import tracemalloc
@@ -128,6 +128,10 @@ class PlateWidget():
                 sweep_times = self.well_widgets[row - 1, col - 1].sweep_times
                 wellIDs.append(self.well_widgets[row - 1, col - 1].wellID)
 
+        from multiprocessing import set_start_method
+        set_start_method("spawn")
+
+        import multiprocessing
 
         num_cpus = int(multiprocessing.cpu_count())
         # num_cpus = 1
