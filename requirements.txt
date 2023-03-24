@@ -15,7 +15,8 @@ pandas==1.5.3
 parse==1.15.0
 Pillow==7.1.2
 Pint==0.20.1
-psycopg2==2.8.6
+# psycopg2==2.8.6
+# psycopg2>=2.7,<2.8 --no-binary psycopg2
 pyparsing==2.4.7
 python-dateutil==2.8.2
 pytz==2022.7.1
@@ -27,3 +28,4 @@ six==1.14.0
 sympy==1.11.1
 toolz==0.10.0
 urllib3==1.25.11
+numpy==1.21.2
