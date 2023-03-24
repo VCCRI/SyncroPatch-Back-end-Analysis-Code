@@ -1,4 +1,5 @@
 import os
+from os import fork
 import shutil
 import numpy as np
 from ssDeact_fit import ssDeact_fit
@@ -16,6 +17,7 @@ import time
 import math
 #import multiprocessing
 import itertools
+from threading import Lock
 
 
 
@@ -60,6 +62,12 @@ def append_summary_results(variant_summary_table, variant_summary_wells, summary
 def work2(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end):
     #print(wellID)
     print("Start process", os.getpid())
+
+    if fork() == 0:
+        # In the child process, try to grab the lock:
+        print("Acquiring lock...")
+        lock.acquire()
+        print("Lock acquired! (This code will never run)")
     neg50mVTW = ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
     print("Finished process", os.getpid())
     return neg50mVTW
@@ -203,6 +211,12 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
 
     import multiprocessing
+
+
+    # Lock is acquired in the parent process:
+    lock = Lock()
+    lock.acquire()
+
 
     num_cpus = int(multiprocessing.cpu_count())
     #pool2 = multiprocessing.Pool(processes=20)
