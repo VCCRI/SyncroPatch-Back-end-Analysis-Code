@@ -128,8 +128,8 @@ class PlateWidget():
                 sweep_times = self.well_widgets[row - 1, col - 1].sweep_times
                 wellIDs.append(self.well_widgets[row - 1, col - 1].wellID)
 
-        from multiprocessing import set_start_method
-        set_start_method("spawn")
+        #from multiprocessing import set_start_method
+        #set_start_method("spawn")
 
         import multiprocessing
 
