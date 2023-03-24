@@ -227,10 +227,10 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     from concurrent.futures import ProcessPoolExecutor
 
-    #with ProcessPoolExecutor(max_workers=10) as executor:
-    with multiprocessing.pool.ThreadPool(20) as pool:
+    with ProcessPoolExecutor(max_workers=20) as executor:
+    #with multiprocessing.pool.ThreadPool(20) as pool:
         # call a function on each item in a list and process results
-        for result in pool.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end))):
+        for result in executor.map(work2, time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)):
             print(result)
     #pool2.close()
 
