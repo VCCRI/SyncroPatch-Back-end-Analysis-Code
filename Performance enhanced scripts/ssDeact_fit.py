@@ -625,7 +625,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
         if sweep_pass_qc_array[sweep] == 0:
             continue
         actual_sweep = sweep+1
-        print('wellID =', wellID, 'sweep = ', sweep, 'process =', os.getpid())
+
         sweep_voltage = voltage_array[sweep]
 
         if sweep_voltage == -80 or sweep_voltage == -90:
@@ -893,6 +893,8 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
             parameter_data[actual_sweep].append(new_time_secs[-1])
         parameter_data[actual_sweep].append(rsquare)
         parameter_data[actual_sweep].append(warning)
+
+        print('wellID =', wellID, 'sweep = ', sweep, 'process =', os.getpid())
 
     # Post quality control analysis now being performed on slow/fast tau trends and idenitfying outliers
     [parameter_data, include_summary] = post_analysis_qc(voltage_array, parameter_data, wellID, 'weighted', summary_sweep_voltage)
