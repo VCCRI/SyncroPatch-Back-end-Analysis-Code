@@ -220,11 +220,17 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     num_cpus = int(multiprocessing.cpu_count())
     #pool2 = multiprocessing.Pool(processes=20)
-    with get_context("spawn").Pool() as pool2:
-    #pool2 = multiprocessing.Semaphore(20)
-    #neg_iterable = pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
-        neg_async_results = pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
 
+    #with get_context("spawn").Pool() as pool2:
+    #neg_iterable = pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
+       # neg_async_results = pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
+
+    from concurrent.futures import ProcessPoolExecutor
+
+    with ProcessPoolExecutor(max_workers=10) as executor:
+        # call a function on each item in a list and process results
+        for result in executor.map(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end))):
+            print(result)
     #pool2.close()
 
 
