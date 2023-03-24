@@ -1,4 +1,4 @@
-FROM Python:3.9
+FROM Python:3.9.16
 
 LABEL module.name="SyncroPatch-Back-end-Analysis-Code"
 LABEL module.description="SyncroPatch-Back-end-Analysis-Code"
@@ -16,4 +16,4 @@ WORKDIR /app/SyncroPatch-Back-end-Analysis-Code/
 
 RUN pip install -r requirements.txt --no-cache-dir
 
-CMD ["python", "main.py"]
+# CMD ["python", "main.py"]
