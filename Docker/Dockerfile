@@ -1,22 +1,22 @@
-FROM Python:3.9
 
-LABEL module.name="SyncroPatch-Back-end-Analysis-Code"
-LABEL module.description="SyncroPatch-Back-end-Analysis-Code"
-LABEL module.version="v0.0.1"
+FROM python:3.8.10-slim-buster
 
-RUN apt get update && apt get install -y \
-    build-essential \
-    libpq-dev \
-    python3-dev \
-    git 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    python-tk \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+# WORKDIR /SyncroPatch-Back-end-Analysis-Code
 # RUN git clone https://github.com/VCCRI/SyncroPatch-Back-end-Analysis-Code.git
 
-COPY "../requirements.txt" "/app/SyncroPatch-Back-end-Analysis-Code/requirements.txt"
 
-WORKDIR /app/SyncroPatch-Back-end-Analysis-Code/
+COPY ./requirements.txt /pip/requirements.txt
 
-RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install --upgrade pip --no-cache-dir
 
-CMD ["python", "main.py"]
+RUN pip install -r /pip/requirements.txt --no-cache-dir
+
+RUN pip install numpy==1.21.2 --no-cache-dir
+
+WORKDIR /SyncroPatch-Back-end-Analysis-Code
+# ENTRYPOINT [ "python3" ] 
