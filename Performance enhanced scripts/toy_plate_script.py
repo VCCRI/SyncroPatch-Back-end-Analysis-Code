@@ -26,11 +26,11 @@ def toy_plate_script(num_rows, num_cols):
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             y_data = np.linspace(0, 10000, 10000)
-            print(y_data)
             x_data = np.linspace(0, 10000, 10000)
             data.append(y_data)
             time_secs.append(x_data)
 
+    print(len(time_secs))
     from concurrent.futures import ProcessPoolExecutor
 
     with ProcessPoolExecutor(max_workers=20) as executor:
