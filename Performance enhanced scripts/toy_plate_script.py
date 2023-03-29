@@ -34,7 +34,7 @@ def toy_plate_script(num_rows, num_cols):
             #y_data = np.linspace(0, 10000, 10000)
             x_data = np.linspace(0, 10000, 10000)
             y_data = double_exponential(x_data, 100, 200, 40, 0.3, 1)
-            y_data = np.add(y_data, random.randint(1, 100, 10000))
+            y_data = np.add(y_data, np.random.randint(1, 100, 10000))
             data.append(y_data)
             time_secs.append(x_data)
 
