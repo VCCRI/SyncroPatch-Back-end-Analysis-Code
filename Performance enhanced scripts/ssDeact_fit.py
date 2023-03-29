@@ -701,7 +701,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
             time_secs = orig_time_secs[indx_min_current:indx_last_time]
             time_ms = orig_time_ms[indx_min_current:indx_last_time]
 
-        return neg50mVTW
+
         # Doing informed fitting now
         if sweep_voltage > -80:
             # First Time data been fit, start initial seed
@@ -726,7 +726,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
             params, cov = optimize.curve_fit(double_exponential, time_ms, sweepData, p0, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
         except:
             continue
-
+        return neg50mVTW
 
         model = double_exponential(time_ms, params[0], params[1], params[2], params[3], params[4])
         # print('model variable computed')
