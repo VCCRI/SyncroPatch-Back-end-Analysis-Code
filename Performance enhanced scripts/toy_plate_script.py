@@ -14,7 +14,7 @@ def straight_line(x, m, b):
 
 
 def work(time, data):
-    params = optimize.curve_fit(straight_line, time, data)
+    params = optimize.curve_fit(straight_line, time, data, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
     return params
 
 
