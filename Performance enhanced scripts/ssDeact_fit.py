@@ -726,6 +726,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
         warnings.filterwarnings('ignore')
         #lock = Lock()
         #lock.acquire()
+        print(sweepData)
         params, cov = optimize.curve_fit(double_exponential, time_ms, sweepData, p0, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
         #lock.release()
         #except:
