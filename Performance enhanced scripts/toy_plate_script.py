@@ -4,6 +4,7 @@
 
 import numpy as np
 from scipy import optimize
+import time
 
 
 def straight_line(x, m, b):
@@ -13,10 +14,12 @@ def straight_line(x, m, b):
 
 def work(time, data):
     params = optimize.curve_fit(straight_line, time, data)
-    return 1
+    return params
 
 
 def toy_plate_script(num_rows, num_cols):
+    tic = time.time()
+
     data = []
     time_secs = []
 
@@ -28,14 +31,18 @@ def toy_plate_script(num_rows, num_cols):
             data.append(y_data)
             time_secs.append(x_data)
 
-    print(len(time_secs))
+    #print(len(time_secs))
     from concurrent.futures import ProcessPoolExecutor
 
     with ProcessPoolExecutor(max_workers=20) as executor:
         # with multiprocessing.pool.ThreadPool(20) as pool:
         # call a function on each item in a list and process results
+        results = []
         for result in executor.map(work, time_secs, data):
-            print(result)
+            #print(result)
+            results.append(result)
+
+    print(time.time()-tic)
 
 def main():
     toy_plate_script(16, 24)
