@@ -16,7 +16,7 @@ def straight_line(x, m, b):
 
 def work(time, data):
     warnings.filterwarnings('ignore')
-    params = optimize.curve_fit(double_exponential, time, data)
+    params = optimize.curve_fit(double_exponential, time, data, method='trf')
     return params
 
 
