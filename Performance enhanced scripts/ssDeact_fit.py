@@ -701,7 +701,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
             time_secs = orig_time_secs[indx_min_current:indx_last_time]
             time_ms = orig_time_ms[indx_min_current:indx_last_time]
 
-
+        return neg50mVTW
         # Doing informed fitting now
         if sweep_voltage > -80:
             # First Time data been fit, start initial seed

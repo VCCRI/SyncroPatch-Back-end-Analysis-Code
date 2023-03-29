@@ -113,7 +113,7 @@ class PlateWidget():
         for col in range(1, self.json_data.column_count + 1):
             for row in range(1, self.json_data.row_count + 1):
                 count += 1
-                self.well_widgets[row - 1, col - 1] = WellWidgetPYQTGraph(self, row, col, self.json_data.row_count, self.json_data.column_count, sweep_times)
+                self.well_widgets[row - 1, col - 1] = WellWidget(self, row, col, self.json_data.row_count, self.json_data.column_count, sweep_times)
                 if np.isnan(num_samples):
                     num_samples = self.well_widgets[row - 1, col - 1].num_sample_points
                     sw = self.well_widgets[row - 1, col - 1].visualising_sweep
@@ -136,6 +136,7 @@ class PlateWidget():
         num_cpus = int(multiprocessing.cpu_count())
         # num_cpus = 1
         print(num_cpus)
+
         pool = multiprocessing.Pool(processes=20)
         data = pool.starmap(work, zip(wellIDs, itertools.repeat(num_samples), itertools.repeat(num_sweeps), itertools.repeat(self.json_data), itertools.repeat(self.input_folder), itertools.repeat(start_index), itertools.repeat(end_index)))
 
@@ -152,9 +153,9 @@ class PlateWidget():
 
         print(time.time()-self.tic)
 
-class WellWidgetPYQTGraph():
+class WellWidget():
     def __init__(self, parent, row, col, num_rows, num_cols, sweep_times):
-        super(WellWidgetPYQTGraph, self).__init__()
+        super(WellWidget, self).__init__()
 
         self.parent = parent
 
@@ -243,13 +244,14 @@ def main():
     #input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_Inact_Onset_AN_11.51.10')
 
 
-
     c = ControlWidget('ssDeact')
     #c = ControlWidget('ssAct')
     #c = ControlWidget('Onset')
     p = PlateWidget(input_folder)
 
     tic = time.time()
+
+
     high_throughput_ssDeact(os.path.join('/datadrive','syncropatch','Clinical_variant_Brett',), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssDeact Fit')
     #high_throughput_ssAct(os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', ), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssAct')
     #high_throughput_onset_inact(os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', ), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'Onset')
