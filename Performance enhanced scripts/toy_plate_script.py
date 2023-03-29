@@ -6,6 +6,7 @@ import numpy as np
 from scipy import optimize
 import time
 import random
+import warnings
 
 
 def straight_line(x, m, b):
@@ -14,7 +15,8 @@ def straight_line(x, m, b):
 
 
 def work(time, data):
-    params = optimize.curve_fit(double_exponential, time, data, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+    warnings.filterwarnings('ignore')
+    params = optimize.curve_fit(double_exponential, time, data)
     return params
 
 
