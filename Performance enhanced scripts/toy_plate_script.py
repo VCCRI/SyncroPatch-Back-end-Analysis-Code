@@ -7,6 +7,7 @@ from scipy import optimize
 import time
 import random
 import warnings
+import statistics as s_tats
 
 
 def straight_line(x, m, b):
@@ -18,8 +19,10 @@ def work(time, data):
     warnings.filterwarnings('ignore')
     #params = optimize.curve_fit(double_exponential, time, data, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
     #params = optimize.curve_fit(double_exponential, time, data, method='trf') #BAD!!
-    params = optimize.curve_fit(double_exponential, time, data,  maxfev=50000)
-    return params
+    params = optimize.curve_fit(double_exponential, time, data,  maxfev=50000) #1.88 seconds
+    model = double_exponential(time, params[0], params[1], params[2], params[3], params[4])
+    rsquare = 1 - sum((data - model) ** 2) / sum((data - s_tats.mean(data)) ** 2)
+    return rsquare
 
 
 def double_exponential(x, A, B, C, tau1, tau2):
@@ -53,6 +56,7 @@ def toy_plate_script(num_rows, num_cols):
             #print(result)
             results.append(result)
 
+    print(results)
     print(time.time()-tic)
 
 def main():
