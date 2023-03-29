@@ -12,7 +12,7 @@ def straight_line(time, m, b):
 
 def work(time, data):
     params, cov = optimize.curve_fit(straight_line, time, data)
-    return params
+    return 1
 
 
 def toy_plate_script(num_rows, num_cols):
