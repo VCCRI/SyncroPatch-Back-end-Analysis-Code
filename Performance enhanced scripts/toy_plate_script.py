@@ -6,8 +6,10 @@ import numpy as np
 from scipy import optimize
 
 
-def straight_line(time, m, b):
-    return time*m+b
+def straight_line(x, m, b):
+    y = x*m+b
+    print(y)
+    return y
 
 
 def work(time, data):
