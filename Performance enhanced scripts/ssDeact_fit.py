@@ -724,10 +724,10 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
         #try:
         warnings.filterwarnings('ignore')
-        lock = Lock()
-        lock.acquire()
+        #lock = Lock()
+        #lock.acquire()
         params, cov = optimize.curve_fit(double_exponential, time_ms, sweepData, p0, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
-        lock.release()
+        #lock.release()
         #except:
         #    continue
         return neg50mVTW
