@@ -21,6 +21,7 @@ from threading import Lock
 
 
 
+
 def append_summary_results(variant_summary_table, variant_summary_wells, summary_table, no_well_summary_table, variant_peak_table, analysis):
     variant_summary_table = variant_summary_table.reshape(-1)
     variant_summary_wells = variant_summary_wells.reshape(-1)
