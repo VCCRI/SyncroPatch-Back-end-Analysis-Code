@@ -620,7 +620,7 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
 
     for sweep in range(0, num_sweeps):
-        print('wellID =', wellID, 'sweep = ', sweep, 'process =', os.getpid())
+        #print('wellID =', wellID, 'sweep = ', sweep, 'process =', os.getpid())
         if sweep_pass_qc_array[sweep] == 0:
             continue
         actual_sweep = sweep+1
