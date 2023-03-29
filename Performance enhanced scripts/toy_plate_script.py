@@ -7,6 +7,7 @@ from scipy import optimize
 
 
 def straight_line(x, m, b):
+    print(x)
     y = x*m+b
     print(y)
     return y
