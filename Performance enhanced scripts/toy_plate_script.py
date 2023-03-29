@@ -5,6 +5,7 @@
 import numpy as np
 from scipy import optimize
 import time
+import random
 
 
 def straight_line(x, m, b):
@@ -17,6 +18,10 @@ def work(time, data):
     return params
 
 
+def double_exponential(x, A, B, C, tau1, tau2):
+    return A * np.exp(-x / tau1) + B * np.exp(-x / tau2) + C
+
+
 def toy_plate_script(num_rows, num_cols):
     tic = time.time()
 
@@ -26,12 +31,14 @@ def toy_plate_script(num_rows, num_cols):
 
     for row in range(0, num_rows):
         for col in range(0, num_cols):
-            y_data = np.linspace(0, 10000, 10000)
+            #y_data = np.linspace(0, 10000, 10000)
             x_data = np.linspace(0, 10000, 10000)
+            y_data = double_exponential(x_data, 100, 200, 40, 0.3, 1)
+            y_data = np.add(y_data, random.randint(1, 100, 10000))
             data.append(y_data)
             time_secs.append(x_data)
 
-    #print(len(time_secs))
+    print(len(time_secs))
     from concurrent.futures import ProcessPoolExecutor
 
     with ProcessPoolExecutor(max_workers=20) as executor:
