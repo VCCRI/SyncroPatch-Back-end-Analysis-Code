@@ -11,7 +11,7 @@ def straight_line(time, m, b):
 
 
 def work(time, data):
-    params, cov = optimize.curve_fit(straight_line, time, data)
+    params = optimize.curve_fit(straight_line, time, data)
     return 1
 
 
