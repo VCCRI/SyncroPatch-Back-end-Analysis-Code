@@ -724,8 +724,8 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
         #try:
         if len(sweepData) < 5:
-            #continue
-            return neg50mVTW
+            continue
+            #return neg50mVTW
 
         warnings.filterwarnings('ignore')
         try:
@@ -762,8 +762,8 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
                 try:
                     #lock = Lock()
                     #lock.acquire()
-                    #params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
-                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000)
+                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+                    #params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000)
                     #lock.release()
                 except:
                     # print('fit failed')
@@ -793,8 +793,8 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
                 # Refit the data
                 try:
-                    #params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
-                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params)
+                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+                    #params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params)
                 except:
                     # print('fit failed')
                     continue
@@ -881,6 +881,12 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
             t_weighted = (A * tau1 + B * tau2) / (A + B)
         if not warning and (actual_sweep == summary_sweep):
             neg50mVTW = t_weighted
+
+
+        plt.figure()
+        plt.plot(time_ms, sweepData)
+        plt.plot(time_ms, model)
+        plt.show()
 
         parameter_data[actual_sweep].append(voltage_array[int(sweep / 2)])
         parameter_data[actual_sweep].append(A_slow)

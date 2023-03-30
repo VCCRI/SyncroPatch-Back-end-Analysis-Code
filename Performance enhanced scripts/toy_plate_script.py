@@ -41,7 +41,7 @@ def double_exponential(x, A, B, C, tau1, tau2):
     return A * np.exp(-x / tau1) + B * np.exp(-x / tau2) + C
 
 
-def toy_plate_script(num_rows, num_cols):
+def toy_plate_script(num_rows, num_cols, well_widgets):
     tic = time.time()
 
     data = []

@@ -236,10 +236,10 @@ class WellWidget():
 def main():
     # for taskbar icon consistency
     #tracemalloc.start()
-    #input_folder = os.path.join('C:\\', 'Users', 'j.farr', 'Documents', 'hERG_ssDeact_3s_AN_11.45.32')
+    input_folder = os.path.join('C:\\', 'Users', 'j.farr', 'Documents', 'hERG_ssDeact_3s_AN_11.45.32')
     #input_folder = os.path.join('/mnt','syncropatch','Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
 
-    input_folder = os.path.join('/datadrive', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
+    #input_folder = os.path.join('/datadrive', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
     #input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssAct_1s_50us_AN_11.42.11')
     #input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_Inact_Onset_AN_11.51.10')
 
