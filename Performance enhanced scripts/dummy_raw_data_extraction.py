@@ -81,15 +81,15 @@ class ControlWidget():
 
 class PlateWidget():
     # well_widgets = QtCore.pyqtSignal()
-    def __init__(self, input_folder):
+    def __init__(self, input_folder, used_cores):
         super(PlateWidget, self).__init__()
 
 
         self.input_folder = input_folder
 
-        self.initialise_ui()
+        self.initialise_ui(used_cores)
 
-    def initialise_ui(self):
+    def initialise_ui(self, used_cores):
 
         start_time = time.time()
         self.tic = time.time()
@@ -136,8 +136,8 @@ class PlateWidget():
         num_cpus = int(multiprocessing.cpu_count())
         # num_cpus = 1
         print(num_cpus)
-        used_cores = 20
-        pool = multiprocessing.Pool(processes=num_cpus)
+        #used_cores = 20
+        pool = multiprocessing.Pool()
         print(used_cores)
         data = pool.starmap(work, zip(wellIDs, itertools.repeat(num_samples), itertools.repeat(num_sweeps), itertools.repeat(self.json_data), itertools.repeat(self.input_folder), itertools.repeat(start_index), itertools.repeat(end_index)))
 
@@ -250,7 +250,9 @@ def main():
     c = ControlWidget('ssDeact')
     #c = ControlWidget('ssAct')
     #c = ControlWidget('Onset')
-    p = PlateWidget(input_folder)
+
+    used_cores = 10
+    p = PlateWidget(input_folder, used_cores)
 
     tic = time.time()
 

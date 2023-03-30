@@ -71,7 +71,7 @@ def work2(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, 
     neg50mVTW = ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_thresh, summary_sweep_voltage, amp_thresh, cursor_start, cursor_end)
     #print("Finished process", os.getpid(), 'for ', wellID)
     return neg50mVTW
-def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget, num_rows, num_cols, analysis_type):
+def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget, num_rows, num_cols, analysis_type, used_cores):
     total_tic = time.time()
 
     if analysis_type == 'ssDeact Fit' or analysis_type == 'ssDeact CD sweep time ratio' or analysis_type == 'ssDeact CD sweep peak ratio' or analysis_type == 'ssDeact CD sweep peak':
@@ -206,8 +206,8 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
     import multiprocessing
 
     num_cpus = int(multiprocessing.cpu_count())
-    used_cores = 20
-    pool2 = multiprocessing.Pool(processes=num_cpus)
+    #used_cores = 20
+    pool2 = multiprocessing.Pool()
     print(used_cores)
     neg_iterables = pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
 
