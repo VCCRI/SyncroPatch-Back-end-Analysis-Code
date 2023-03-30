@@ -8,6 +8,7 @@ import time
 import random
 import warnings
 import statistics as s_tats
+import matplotlib.pyplot as plt
 
 
 def straight_line(x, m, b):
@@ -20,9 +21,14 @@ def work(time, data):
     #params = optimize.curve_fit(double_exponential, time, data, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
     #params = optimize.curve_fit(double_exponential, time, data, method='trf') #BAD!!
     params, cov = optimize.curve_fit(double_exponential, time, data,  maxfev=50000) #1.88 seconds
-    print(len(params))
+    #print(len(params))
     model = double_exponential(time, params[0], params[1], params[2], params[3], params[4])
     rsquare = 1 - sum((data - model) ** 2) / sum((data - s_tats.mean(data)) ** 2)
+
+    plt.figure()
+    plt.plot(time, data)
+    plt.plot(time, model)
+    plt.show()
     return rsquare
 
 
@@ -43,6 +49,9 @@ def toy_plate_script(num_rows, num_cols):
             x_data = np.linspace(0, 10000, 10000)
             y_data = double_exponential(x_data, 100, 200, 40, 0.3, 1)
             y_data = np.add(y_data, np.random.randint(1, 100, 10000))
+
+            firgure = Figure()
+
             data.append(y_data)
             time_secs.append(x_data)
 
