@@ -24,7 +24,12 @@ def work(time, data):
     #print(len(params))
     model = double_exponential(time, params[0], params[1], params[2], params[3], params[4])
     rsquare = 1 - sum((data - model) ** 2) / sum((data - s_tats.mean(data)) ** 2)
-
+    '''
+    plt.figure()
+    plt.plot(time, data)
+    plt.plot(time, model)
+    '''
+    plt.show()
 
     return rsquare
 
@@ -43,12 +48,10 @@ def toy_plate_script(num_rows, num_cols):
     for row in range(0, num_rows):
         for col in range(0, num_cols):
             #y_data = np.linspace(0, 10000, 10000)
-            x_data = np.linspace(0, 10000, 10000)
-            y_data = double_exponential(x_data, 100, 200, 40, 0.3, 1)
-            y_data = np.add(y_data, np.random.randint(1, 100, 10000))
-            plt.figure()
-            plt.plot(x_data, y_data)
-            plt.show()
+            x_data = np.linspace(0, 1000, 10000)
+            y_data = double_exponential(x_data, -500, -1000, -20, 20, 300)
+            y_data = np.add(y_data, np.random.randint(1, 10, 10000))
+
             data.append(y_data)
             time_secs.append(x_data)
 
