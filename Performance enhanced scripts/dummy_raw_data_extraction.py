@@ -257,7 +257,7 @@ def main():
     tic = time.time()
 
 
-    high_throughput_ssDeact(os.path.join('/datadrive','syncropatch','Clinical_variant_Brett',), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssDeact Fit')
+    high_throughput_ssDeact(os.path.join('/datadrive','syncropatch','Clinical_variant_Brett',), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssDeact Fit', used_cores)
     #high_throughput_ssAct(os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', ), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'ssAct')
     #high_throughput_onset_inact(os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', ), '01092022_AN', p.well_widgets, c, p.json_data.row_count, p.json_data.column_count, 'Onset')
 
