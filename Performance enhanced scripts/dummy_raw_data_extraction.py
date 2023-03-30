@@ -251,7 +251,7 @@ def main():
     #c = ControlWidget('ssAct')
     #c = ControlWidget('Onset')
 
-    used_cores = 10
+    used_cores = 12
     p = PlateWidget(input_folder, used_cores)
 
     tic = time.time()
