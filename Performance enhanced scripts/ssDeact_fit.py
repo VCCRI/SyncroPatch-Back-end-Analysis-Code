@@ -728,14 +728,12 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
             return neg50mVTW
 
         warnings.filterwarnings('ignore')
-        lock = Lock()
-        lock.acquire()
-        print(len(sweepData))
-        params, cov = optimize.curve_fit(double_exponential, time_ms, sweepData, p0, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
-        lock.release()
-        #except:
-        #    continue
-        return neg50mVTW
+        try:
+            #params, cov = optimize.curve_fit(double_exponential, time_ms, sweepData, p0, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf') f_scale=0.1, method='trf')
+            params, cov = optimize.curve_fit(double_exponential, time_ms, sweepData, p0, maxfev=50000)
+
+        except:
+            continue
 
         model = double_exponential(time_ms, params[0], params[1], params[2], params[3], params[4])
         # print('model variable computed')
@@ -762,10 +760,11 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
                 # Refit the data
                 try:
-                    lock = Lock()
-                    lock.acquire()
-                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
-                    lock.release()
+                    #lock = Lock()
+                    #lock.acquire()
+                    #params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000)
+                    #lock.release()
                 except:
                     # print('fit failed')
                     continue
@@ -794,7 +793,8 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
                 # Refit the data
                 try:
-                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+                    #params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params)
                 except:
                     # print('fit failed')
                     continue
