@@ -207,7 +207,7 @@ def high_throughput_ssDeact(parent_dir, plate_name, well_widgets, control_widget
 
     num_cpus = int(multiprocessing.cpu_count())
     #used_cores = 20
-    pool2 = multiprocessing.Pool()
+    pool2 = multiprocessing.Pool(processes=used_cores)
     print(used_cores)
     neg_iterables = pool2.starmap(work2, zip(time_secs, data, sweep_pass_qc_array, num_sweeps, wellIDs, itertools.repeat(control_widget.rsq_thresh), itertools.repeat(control_widget.summary_sweep_voltage), itertools.repeat(control_widget.amp_thresh), itertools.repeat(control_widget.cursor_start), itertools.repeat(control_widget.cursor_end)))
 
