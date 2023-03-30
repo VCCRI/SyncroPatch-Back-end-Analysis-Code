@@ -20,7 +20,7 @@ def work(time, data):
     warnings.filterwarnings('ignore')
     #params = optimize.curve_fit(double_exponential, time, data, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
     try:
-        params = optimize.curve_fit(double_exponential, time, data, method='trf') #BAD!!
+        params, cov = optimize.curve_fit(double_exponential, time, data, method='trf') #BAD!!
     except:
         return np.nan
     #params, cov = optimize.curve_fit(double_exponential, time, data,  maxfev=50000) #1.88 seconds, 1.671149492263794
