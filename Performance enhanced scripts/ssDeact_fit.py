@@ -793,8 +793,8 @@ def ssDeact_fit(time_secs, data, sweep_pass_qc_array, num_sweeps, wellID, rsq_th
 
                 # Refit the data
                 try:
-                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
-                    #params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params)
+                    #params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params, maxfev=50000, loss='soft_l1', f_scale=0.1, method='trf')
+                    params, cov = optimize.curve_fit(double_exponential, new_time_ms, sweepData, params)
                 except:
                     # print('fit failed')
                     continue
