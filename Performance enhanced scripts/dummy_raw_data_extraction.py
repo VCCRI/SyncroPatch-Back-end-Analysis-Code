@@ -137,7 +137,7 @@ class PlateWidget():
         # num_cpus = 1
         print(num_cpus)
 
-        pool = multiprocessing.Pool(processes=20)
+        pool = multiprocessing.Pool(processes=1)
         data = pool.starmap(work, zip(wellIDs, itertools.repeat(num_samples), itertools.repeat(num_sweeps), itertools.repeat(self.json_data), itertools.repeat(self.input_folder), itertools.repeat(start_index), itertools.repeat(end_index)))
 
         #
@@ -239,6 +239,8 @@ def main():
     #input_folder = os.path.join('C:\\', 'Users', 'j.farr', 'Documents', 'hERG_ssDeact_3s_AN_11.45.32')
     #input_folder = os.path.join('/mnt','syncropatch','Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
 
+    all_tic = time.time()
+
     input_folder = os.path.join('/datadrive', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssDeact_3s_AN_11.45.32')
     #input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_ssAct_1s_50us_AN_11.42.11')
     #input_folder = os.path.join('/mnt', 'syncropatch', 'Clinical_variant_Brett', '01092022_AN', 'hERG_Inact_Onset_AN_11.51.10')
@@ -260,7 +262,7 @@ def main():
     #tracemalloc.stop()
     print(time.time()-tic)
 
-
+    print('full run-time =', time.time()-all_tic)
 '''
     
 '''
