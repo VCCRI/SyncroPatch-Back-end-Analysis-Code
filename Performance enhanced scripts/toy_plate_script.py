@@ -25,10 +25,7 @@ def work(time, data):
     model = double_exponential(time, params[0], params[1], params[2], params[3], params[4])
     rsquare = 1 - sum((data - model) ** 2) / sum((data - s_tats.mean(data)) ** 2)
 
-    plt.figure()
-    plt.plot(time, data)
-    plt.plot(time, model)
-    plt.show()
+
     return rsquare
 
 
@@ -49,7 +46,9 @@ def toy_plate_script(num_rows, num_cols):
             x_data = np.linspace(0, 10000, 10000)
             y_data = double_exponential(x_data, 100, 200, 40, 0.3, 1)
             y_data = np.add(y_data, np.random.randint(1, 100, 10000))
-
+            plt.figure()
+            plt.plot(x_data, y_data)
+            plt.show()
             data.append(y_data)
             time_secs.append(x_data)
 
@@ -63,6 +62,7 @@ def toy_plate_script(num_rows, num_cols):
         for result in executor.map(work, time_secs, data):
             #print(result)
             results.append(result)
+
 
     print(results)
     print(time.time()-tic)
